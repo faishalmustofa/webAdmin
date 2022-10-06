@@ -19,40 +19,37 @@ Laravel Package to perform word replacement on files using document templates (`
 
 ![Example](https://raw.githubusercontent.com/novay/laravel-word-template/master/example.png)
 
-### Requirements
-* [Laravel 5.1, 5.2, 5.3, 5.4, or 5.5+](https://laravel.com/docs/installation)
+### Requirements Installation
 * [XAMPP](https://www.apachefriends.org/download.html)
 * [Composer](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-macos)
+* [PHP v7.3^](https://www.php.net/manual/en/install.macosx.packages.php)
+* [Git](https://www.atlassian.com/git/tutorials/install-git)
+* [Visual Studio Code](https://code.visualstudio.com/download)
 
 ### Installation Instructions
-1. 
-1. From your projects root folder in terminal run:
+1. Open Visual Studio Code, navigate to xampp repository xampp/htdocs/
+2. Open a new terminal an run:
+    ```bash
+        git clone https://github.com/faishalmustofa/webAdmin
+    ```
+3. After finish the clone, run:
 
     ```bash
         composer install or composer update
     ```
 
-2. Register the package
+4. Copy file .env.example and ceate a new .env file, setting the connsction to database
+5. Generate laravel key app, run:
 
-    * Laravel 5.5 and up
-    Uses package auto discovery feature, no need to edit the `config/app.php` file.
-
-    * Laravel 5.4 and below
-    Register the package with laravel in `config/app.php` under `providers` and `aliases` with the following:
-
-    ```php
-        'providers' => [
-        ...
-            Novay\WordTemplate\WordTemplateServiceProvider::class,
-        ];
-
-        'aliases' => [
-        ...
-           'WordTemplate' => Novay\WordTemplate\Facade::class, 
-        ];
+    ```bash
+        php artisan key:generate
     ```
 
-
+6. Migrate the migration to create database table, run :
+    
+    ```bash
+        php artisan migrate
+    ```
 
 ### License
 Laravel Word Template is licensed under the MIT license. Enjoy!
