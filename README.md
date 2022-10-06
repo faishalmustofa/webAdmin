@@ -13,11 +13,9 @@
 
 ### About
 
-Laravel Package to perform word replacement on files using document templates (`.rtf`) that have been provided.
+[EN] Website Admin with management system to create, update, and delete (CRUD) data.
 
-[ID] Package Laravel untuk melakukan penggantian kata pada file menggunakan template dokumen (`.rtf`) yang sudah disediakan.
-
-![Example](https://raw.githubusercontent.com/novay/laravel-word-template/master/example.png)
+[ID] Situs web admin dengan sistem manajemen untuk Membuat, Memperbarui, dan Menghapus (CRUD) data.
 
 ### Requirements Installation
 * [XAMPP](https://www.apachefriends.org/download.html)
