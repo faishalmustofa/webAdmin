@@ -36,8 +36,9 @@
         composer install or composer update
     ```
 
-4. Copy file .env.example and ceate a new .env file, setting the connsction to database
-5. Generate laravel key app, run:
+4. Copy file .env.example and create a new .env file.
+5. Setting the connection with database that has been created.
+6. Generate laravel key app, run:
 
     ```bash
         php artisan key:generate
