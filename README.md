@@ -7,9 +7,6 @@
 - [About](#about)
 - [Requirements](#requirements)
 - [Installation Instructions](#installation-instructions)
-- [Panduan Penggunaan](#penggunaan)
-- [Basic Usage](#usage)
-- [License](#license)
 
 ### About
 
@@ -49,6 +46,3 @@
     ```bash
         php artisan migrate
     ```
-
-### License
-Laravel Word Template is licensed under the MIT license. Enjoy!
