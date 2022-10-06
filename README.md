@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Web Admin CMS
 
 [![Latest Stable Version](https://poser.pugx.org/novay/laravel-word-template/v/stable)](https://packagist.org/packages/novay/laravel-word-template)
@@ -47,7 +46,7 @@
     ```bash
         php artisan migrate
     ```
-=======
+    
 <p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
 
 <p align="center">
