@@ -25,7 +25,7 @@
 * [Visual Studio Code](https://code.visualstudio.com/download)
 
 ### Installation Instructions
-1. Open Visual Studio Code, navigate to xampp repository xampp/htdocs/
+1. Open Visual Studio Code, open folder and navigate to xampp repository xampp/htdocs/
 2. Open a new terminal an run:
     ```bash
         git clone https://github.com/faishalmustofa/webAdmin
