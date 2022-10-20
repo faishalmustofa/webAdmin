@@ -29,10 +29,8 @@
                                         type="text" 
                                         name="nama_pembuat" 
                                         class="form-control" 
-                                        value="{{ $admin->name }}"
-                                        {{-- placeholder="Enter Nama Pembuat..." --}}
+                                        value="{{ (old('nama_pembuat') ? old('nama_pembuat') : (($sppm->nama_pembuat === '') ? '' : $sppm->nama_pembuat)) }}"
                                         id="nama_pembuat"
-                                        disabled
                                     >
                                 </div>
                                 @if ($errors->has('nama_pembuat'))
@@ -41,6 +39,28 @@
                                     </div>
                                 @endif
                                 <p class="text-danger text_err" id="nama_pembuat_err"></p>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-md-2">
+                                    <label for="nama_project">Nama Project</label>
+                                </div>
+                                <div class="col-md-10">
+                                    <input 
+                                        type="text" 
+                                        name="nama_project" 
+                                        class="form-control"
+                                        placeholder="Enter Nama Project..."
+                                        value="{{ (old('nama_project') ? old('nama_project') : (($sppm->nama_project === '') ? '' : $sppm->nama_project)) }}"
+                                        id="nama_project"
+                                    >
+                                </div>
+                                @if ($errors->has('nama_project'))
+                                    <div class="invalid-feedback">
+                                        <strong>{{ $errors->first('nama_project') }}</strong>
+                                    </div>
+                                @endif
+                                <p class="text-danger text_err" id="nama_project_err"></p>
                             </div>
 
                             <div class="form-group row">
@@ -71,7 +91,7 @@
                                 </div>
                                 <div class="col-md-10">
                                     <input 
-                                        type="number" 
+                                        type="text" 
                                         name="no_sppm" 
                                         class="form-control" 
                                         placeholder="Enter No. SPPM..."
@@ -115,7 +135,7 @@
                                 </div>
                                 <div class="col-md-10">
                                     <input 
-                                        type="number" 
+                                        type="text" 
                                         name="no_spk" 
                                         class="form-control" 
                                         placeholder="No. SPK..."
@@ -269,7 +289,7 @@
                                 </div>
                                 <div class="col-md-10">
                                     <input 
-                                        type="number" 
+                                        type="text" 
                                         name="qty_hpp" 
                                         class="form-control" 
                                         placeholder="Enter Qty HPP..."
@@ -291,13 +311,13 @@
                                 </div>
                                 <div class="col-md-10">
                                     <input 
-                                        type="text" 
+                                        type="date" 
                                         name="target_kedatangan" 
                                         class="form-control" 
-                                        placeholder="Enter Target Kedatangan..."
+                                        placeholder="dd-mm-yyyy"
                                         value="{{ (old('target_kedatangan') ? old('target_kedatangan') : (($sppm->target_kedatangan === '') ? '' : $sppm->target_kedatangan)) }}"
                                         id="target_kedatangan"
-                                    >
+                                        style="width:35%">
                                 </div>
                                 @if ($errors->has('target_kedatangan'))
                                     <div class="invalid-feedback">

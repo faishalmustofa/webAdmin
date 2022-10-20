@@ -19,9 +19,13 @@ use Illuminate\Support\Facades\Route;
 
 //Dashboard
 Route::get('/', 'DashboardController@index')->name('dashboard');
+Route::get('/grafik', 'DashboardController@grafik')->name('grafik');
+Route::get('/get-grafik','DashboardController@getGrafik')->name('get-grafik');
+
 
 // Auth
-Route::get('/register', 'AuthController@register')->name('register');
+Route::get('/registration', 'AuthController@registration')->name('registration');
+Route::post('/register', 'AuthController@register')->name('register');
 Route::get('/login', 'AuthController@login')->name('login');
 Route::post('/post-login', 'AuthController@postLogin')->name('post-login');
 Route::post('/logout', 'AuthController@logout')->name('logout');
@@ -65,8 +69,8 @@ Route::namespace("PO")->group(function (){
     Route::get('/create-po', 'POController@createPo')->name('create.po');
     Route::post('/store-po', 'POController@storePo')->name('store.po');
     Route::get('/edit-po/{id}', 'POController@editPo')->name('edit.po');
-    Route::patch('/update-po/{id}', 'POController@updatePo')->name('update.po');
-    Route::post('/delete-po/{id}', 'POController@deletePo')->name('delete.po');
+    Route::post('/update-po/{id}', 'POController@updatePo')->name('update.po');
+    Route::get('/delete-po/{id}', 'POController@deletePo')->name('delete.po');
 
     Route::get('/datatable-po','POController@datatables')->name('datatable.po');
 });
@@ -79,6 +83,8 @@ Route::namespace("SPPM")->group(function (){
     Route::get('/edit-sppm/{id}', 'SPPMController@editSppm')->name('edit.sppm');
     Route::post('/update-sppm/{id}', 'SPPMController@updateSppm')->name('update.sppm');
     Route::get('/delete-sppm/{id}', 'SPPMController@deleteSppm')->name('delete.sppm');
+    Route::get('/detail-proses-sppm/{id}', 'SPPMController@detailProsesSPPM')->name('detail.proses.sppm');
+    Route::post('/update-proses-sppm/{id}', 'SPPMController@updateProsesSPPM')->name('update.proses.sppm');
 
     Route::get('/datatable-sppm','SPPMController@datatables')->name('datatable.sppm');
 });

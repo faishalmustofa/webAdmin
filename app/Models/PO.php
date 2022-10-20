@@ -9,11 +9,13 @@ class PO extends Model
     protected $table = "pos";
 
     protected $fillable = [
+        'id_sppm',
         'supplier',
         'id_supplier',
         'hri',
         'qty_hri',
         'efisiensi',
+        'ri_ked',
         'metode_pembayaran',
         'tempo_pembayaran',
         'metode_penyerahan_barang',
@@ -23,8 +25,14 @@ class PO extends Model
 
     protected $primaryKey = "id";
 
+    public function sppm()
+    {
+        return $this->belongsTo(SPPM::class, 'id_sppm', 'id');
+    }
+
     public $rules = [
         'po' => [
+            'id_sppm' => 'required',
             'supplier' => 'required',
             'id_supplier' => 'required',
             'hri' => 'required',
@@ -32,7 +40,7 @@ class PO extends Model
             'efisiensi' => 'required',
             'ri_ked' => 'required|date',
             'metode_pembayaran' => 'required',
-            'tempo_pembayaran' => 'required|date',
+            'tempo_pembayaran' => 'required',
             'metode_penyerahan_barang' => 'required',
             'lokasi_penyerahan_barang' => 'required',
             'dokumen_kontrak' => 'required|mimes:pdf',
@@ -41,6 +49,7 @@ class PO extends Model
 
     public $messages = [
         'po' => [
+            'id_sppm' => 'ID SPPM field is Required',
             'supplier' => 'Supplier field is Required',
             'id_supplier' => 'ID Supplier field is Required',
             'hri' => 'H. Ri field is Required',

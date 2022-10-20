@@ -314,6 +314,7 @@ return [
         [
             'text'        => 'Dashboard',
             'url'         => '/',
+            'icon'        => 'fas fa-fw fa-tachometer-alt',
             // 'label'       => 4,
             // 'label_color' => 'success',
         ],
@@ -354,7 +355,7 @@ return [
         [
             'text'        => 'PO',
             // 'url'         => '/po-monitoring',
-            'icon'        => 'fas fa-fw fa-bullseye',
+            'icon'        => 'fas fa-fw fa-receipt',
             'submenu' => [
                 [
                     'text' => 'List PO',
@@ -392,6 +393,16 @@ return [
         //         ],
         //     ],
         // ],
+        // [
+        //     'text'        => 'Evaluasi KPI',
+        //     'url'         => '/kpi',
+        //     'icon'        => 'fas fa-fw fa-clipboard-list',
+        // ],
+        [
+            'text'        => 'Grafik',
+            'url'         => '/grafik',
+            'icon'        => 'fas fa-fw fa-chart-bar',
+        ],
         // [
         //     'text'        => 'Pengadaan Proyek',
         //     'url'         => 'pengadaan-proyek',

@@ -21,15 +21,15 @@
     <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.2/js/toastr.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
-            hpp.addEventListener('keyup', function(e){
+            hri.addEventListener('keyup', function(e){
                 // tambahkan 'Rp.' pada saat form di ketik
                 // gunakan fungsi formatRupiah() untuk mengubah angka yang di ketik menjadi format angka
-                hpp.value = formatRupiah(this.value, '');
+                hri.value = formatRupiah(this.value, '');
             });
-            qty_hpp.addEventListener('keyup', function(e){
+            qty_hri.addEventListener('keyup', function(e){
                 // tambahkan 'Rp.' pada saat form di ketik
                 // gunakan fungsi formatRupiah() untuk mengubah angka yang di ketik menjadi format angka
-                qty_hpp.value = formatRupiah(this.value, '');
+                qty_hri.value = formatRupiah(this.value, '');
             });
 
             /* Fungsi formatRupiah */
@@ -50,24 +50,24 @@
                 return prefix == undefined ? rupiah : (rupiah ? rupiah : '');
             };
 
-            $('#file_teknis').on('change',function(){
+            $('#dokumen_kontrak').on('change',function(){
                 //get the file name
-                var fileName = $('#file_teknis')[0].files;
+                var fileName = $('#dokumen_kontrak')[0].files;
                 //replace the "Choose a file" label
                 $(this).next('.custom-file-label').html(fileName[0].name);
             });
-            $('#btnSubmit').click(function(e){
+
+            $('#btnSumbit').click(function(e){
                 e.preventDefault();
                 let $this = $(this);
                 let url = '{{ $urlSubmit }}';
-                let form_selector = "form#editSPPM";
+                let form_selector = "form#editPO";
                 let form = $(form_selector).serializeArray();
-                console.log(url);
 
                 let request = new FormData();
 
                 form.forEach(value => {
-                    if (value.name === 'hpp' || value.name === 'qty_hpp') {
+                    if (value.name === 'hri' || value.name === 'qty_hri') {
                         currency = value.value.split('.');
                         currency = currency.join('');
                         request.append(value.name, currency);
@@ -76,9 +76,9 @@
                     }
                 });
 
-                let file_teknis = $('#file_teknis')[0].files;
-                request.append('file_teknis', (file_teknis.length > 0 ? file_teknis[0] : ''));
-                
+                let dokumen_kontrak = $('#dokumen_kontrak')[0].files;
+                request.append('dokumen_kontrak', (dokumen_kontrak.length > 0 ? dokumen_kontrak[0] : ''));
+
                 $.ajax({
                     type: "POST",
                     url: url,
@@ -97,17 +97,16 @@
 								$(selector).html(key[0])
                             });
                             swal.fire({
-                                icon: 'error',
-                                title: 'Error',
+                                icon: 'warning',
                                 text: 'Some fields required to fill in !'
                             });
                         } else {
                             swal.fire({
                                 icon: 'success',
                                 title: 'Updated',
-                                text: 'Data has been updated! '
+                                text: 'Data has been updated!'
                             }).then(() => {
-                                window.location.href = '{{ route("sppm") }}';
+                                window.location.href = '{{ route("po") }}';
                             });
                         }
                     },

@@ -90,6 +90,15 @@
             @enderror
         </div>
 
+        {{-- Select Role field --}}
+        <div class="input-group mb-3">
+            <select class="custom-select text-center" name="role" id="role">
+                <option value="">-- Select role --</option>
+                <option value="1">Pengadaan</option>
+                <option value="2">Produksi</option>
+            </select>
+        </div>
+
         {{-- Register button --}}
         <button type="submit" class="btn btn-block {{ config('adminlte.classes_auth_btn', 'btn-flat btn-primary') }}">
             <span class="fas fa-user-plus"></span>
@@ -100,8 +109,8 @@
 @stop
 
 @section('auth_footer')
-    <p class="my-0">
-        <a href="{{ $login_url }}">
+    <p class="my-0 text-center">
+        <a href="{{ route('login') }}">
             {{ __('adminlte::adminlte.i_already_have_a_membership') }}
         </a>
     </p>

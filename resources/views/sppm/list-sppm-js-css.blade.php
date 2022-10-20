@@ -31,6 +31,7 @@
                 columns: [
                     {data: 'DT_RowIndex', name: 'DT_RowIndex' , orderable: false, searchable: false},
                     {data: 'nama_pembuat', name: 'nama_pembuat'},
+                    {data: 'nama_project', name: 'nama_project'},
                     {data: 'no_project', name: 'no_project'},
 					{data: 'no_sppm', name: 'no_sppm'},
                     {data: 'tgl_sppm', name: 'tgl_sppm'},

@@ -1,22 +1,7 @@
 @extends('adminlte::page')
 
-@section('title','Create PO')
+@section('title','Edit PO')
 
-@section('css')
-    <style>
-        /* Chrome, Safari, Edge, Opera */
-        input::-webkit-outer-spin-button,
-        input::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-        }
-
-        /* Firefox */
-        input[type=number] {
-        -moz-appearance: textfield;
-        }
-    </style>
-@stop
 
 @section('content')
     <div class="container mt-5">
@@ -24,13 +9,13 @@
             <div class="col">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Create PO</h3>
+                        <h3 class="card-title">Edit PO</h3>
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus" style="display:none;"></i></button>
                         </div>
                     </div>
                     <!-- /.card-header -->
-                    <form action="{{ $urlSubmit}}" id="storePO" method="POST" enctype="multipart/form-data">
+                    <form action="{{ $urlSubmit}}" id="editPO" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="card-body">
                             @include('flash::message')
@@ -42,7 +27,7 @@
                                     <select class="custom-select" name="id_sppm" id="id_sppm" style="width:35%">
                                         <option class="text-center" value="">-- Select SPPM Project --</option>
                                         @foreach ($sppm as $item)
-                                            <option class="text-center" value="{{$item->id}}">{{ $item->nama_project }}</option>
+                                            <option class="text-center" value="{{ $item->id }}" {{ ( old('id_sppm') ? old('id_sppm') : ($item->id === $po->id_sppm ? 'selected' : '') ) }}>{{ $item->nama_project }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -64,6 +49,7 @@
                                         name="supplier" 
                                         class="form-control" 
                                         placeholder="Enter Supplier..."
+                                        value="{{ (old('supplier') ? old('supplier') : (($po->supplier === '') ? '' : $po->supplier)) }}"
                                         id="supplier"
                                     >
                                 </div>
@@ -85,6 +71,7 @@
                                         name="id_supplier" 
                                         class="form-control" 
                                         placeholder="Enter ID Supplier..."
+                                        value="{{ (old('id_supplier') ? old('id_supplier') : (($po->id_supplier === '') ? '' : $po->id_supplier)) }}"
                                         id="id_supplier"
                                         >
                                 </div>
@@ -98,14 +85,15 @@
 
                             <div class="form-group row">
                                 <div class="col-md-2">
-                                    <label for="hri">Harga Realisasi</label>
+                                    <label for="hri">H. Ri</label>
                                 </div>
                                 <div class="col-md-10">
                                     <input 
                                         type="text" 
                                         name="hri" 
                                         class="form-control" 
-                                        placeholder="Enter Harga Realisasi..."
+                                        placeholder="Enter H. Ri..."
+                                        value="{{ (old('hri') ? old('hri') : (($po->hri === '') ? '' : $po->hri)) }}"
                                         id="hri"
                                     >
                                 </div>
@@ -119,14 +107,15 @@
 
                             <div class="form-group row">
                                 <div class="col-md-2">
-                                    <label for="qty_hri">Qty Harga Realisasi</label>
+                                    <label for="qty_hri">Qty H. Ri</label>
                                 </div>
                                 <div class="col-md-10">
                                     <input 
-                                        type="text" 
+                                        type="number" 
                                         name="qty_hri" 
                                         class="form-control" 
-                                        placeholder="Enter Qty Harga Realisasi..."
+                                        placeholder="Enter Qty H. Ri..."
+                                        value="{{ (old('qty_hri') ? old('qty_hri') : (($po->qty_hri === '') ? '' : $po->qty_hri)) }}"
                                         id="qty_hri"
                                     >
                                 </div>
@@ -145,8 +134,8 @@
                                 <div class="col-md-10">
                                     <select class="custom-select" name="efisiensi" id="efisiensi" style="width:35%">
                                         <option class="text-center" value=""> -- Select Efisiensi / Inefisiensi -- </option>
-                                        <option class="text-center" value="0" {{ (old('status') ? 'selected' : '') }}>Efisiensi</option>
-                                        <option class="text-center" value="1" {{ (old('status') ? 'selected' : '') }}>Inefisiensi</option>
+                                        <option class="text-center" value="0" {{ (old('efisiensi') ? old('efisiensi') : (($po->efisiensi === 0) ? 'selected' : '')) }}>Efisiensi</option>
+                                        <option class="text-center" value="1" {{ (old('efisiensi') ? old('efisiensi') : (($po->efisiensi === 1) ? 'selected' : '')) }}>Inefisiensi</option>
                                     </select>
                                 </div>
                                 @if ($errors->has('efisiensi'))
@@ -167,6 +156,7 @@
                                         name="ri_ked" 
                                         class="form-control" 
                                         placeholder="dd-mm-yyyy"
+                                        value="{{ (old('ri_ked') ? old('ri_ked') : (($po->ri_ked === '') ? '' : $po->ri_ked)) }}"
                                         id="ri_ked"
                                         style="width:35%">
                                 </div>
@@ -194,6 +184,7 @@
                                         name="metode_pembayaran" 
                                         class="form-control" 
                                         placeholder="Enter Metode Pembayaran..."
+                                        value="{{ (old('metode_pembayaran') ? old('metode_pembayaran') : (($po->metode_pembayaran === '') ? '' : $po->metode_pembayaran)) }}"
                                         id="metode_pembayaran">
                                 </div>
                                 @if ($errors->has('metode_pembayaran'))
@@ -209,11 +200,13 @@
                                 </div>
                                 <div class="col-md-10">
                                     <input 
-                                        type="number" 
+                                        type="date" 
                                         name="tempo_pembayaran" 
                                         class="form-control" 
+                                        placeholder="dd-mm-yyyy"
+                                        value="{{ (old('tempo_pembayaran') ? old('tempo_pembayaran') : (($po->tempo_pembayaran === '') ? '' : $po->tempo_pembayaran)) }}"
                                         id="tempo_pembayaran"
-                                        placeholder="Enter Tempo Pembayaran...">
+                                        style="width:35%">
                                 </div>
                                 @if ($errors->has('tempo_pembayaran'))
                                     <div class="invalid-feedback">
@@ -240,6 +233,7 @@
                                             name="metode_penyerahan_barang" 
                                             class="form-control" 
                                             placeholder="Enter Metode Penyerahan Barang..."
+                                            value="{{ (old('metode_penyerahan_barang') ? old('metode_penyerahan_barang') : (($po->metode_penyerahan_barang === '') ? '' : $po->metode_penyerahan_barang)) }}"
                                             id="metode_penyerahan_barang">
                                     </div>
                                     @if ($errors->has('metode_penyerahan_barang'))
@@ -259,6 +253,7 @@
                                             name="lokasi_penyerahan_barang" 
                                             class="form-control" 
                                             placeholder="Enter Lokasi Penyerahan Barang..."
+                                            value="{{ (old('lokasi_penyerahan_barang') ? old('lokasi_penyerahan_barang') : (($po->lokasi_penyerahan_barang === '') ? '' : $po->lokasi_penyerahan_barang)) }}"
                                             id="lokasi_penyerahan_barang">
                                     </div>
                                     @if ($errors->has('lokasi_penyerahan_barang'))
@@ -282,9 +277,11 @@
                                             class="custom-file-input" 
                                             id="dokumen_kontrak"
                                             accept="application/pdf"
+                                            title="{{ (old('dokumen_kontrak') ? old('dokumen_kontrak') : (($po->dokumen_kontrak === '') ? 'No File Chosen' : $po->dokumen_kontrak)) }}"
+                                            placeholder="{{ (old('dokumen_kontrak') ? old('dokumen_kontrak') : (($po->dokumen_kontrak === '') ? '' : $po->dokumen_kontrak)) }}"
                                         >
                                         <label class="custom-file-label" for="dokumen_kontrak">
-                                            Choose a file
+                                            {{ (old('dokumen_kontrak') ? old('dokumen_kontrak') : (($po->dokumen_kontrak === '') ? 'Choose File' : $po->dokumen_kontrak)) }}
                                          </label>
                                     </div>
                                     
@@ -307,5 +304,5 @@
             </div>
         </div>
     </div>
-@include('po.create-js-css')
+@include('po.edit-js-css')
 @stop

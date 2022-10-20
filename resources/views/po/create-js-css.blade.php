@@ -21,6 +21,35 @@
     <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.2/js/toastr.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
+            hri.addEventListener('keyup', function(e){
+                // tambahkan 'Rp.' pada saat form di ketik
+                // gunakan fungsi formatRupiah() untuk mengubah angka yang di ketik menjadi format angka
+                hri.value = formatRupiah(this.value, '');
+            });
+            qty_hri.addEventListener('keyup', function(e){
+                // tambahkan 'Rp.' pada saat form di ketik
+                // gunakan fungsi formatRupiah() untuk mengubah angka yang di ketik menjadi format angka
+                qty_hri.value = formatRupiah(this.value, '');
+            });
+
+            /* Fungsi formatRupiah */
+            function formatRupiah(angka, prefix){
+                var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                split   		= number_string.split(','),
+                sisa     		= split[0].length % 3,
+                rupiah     		= split[0].substr(0, sisa),
+                ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
+                
+                // tambahkan titik jika yang di input sudah menjadi angka ribuan
+                if(ribuan){
+                    separator = sisa ? '.' : '';
+                    rupiah += separator + ribuan.join('.');
+                }
+                
+                rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+                return prefix == undefined ? rupiah : (rupiah ? rupiah : '');
+            };
+
             $('#dokumen_kontrak').on('change',function(e){
                 //get the file name
                 var fileName = $('#dokumen_kontrak')[0].files;
@@ -39,11 +68,18 @@
 
                 let dokumen_kontrak = $('#dokumen_kontrak')[0].files;
                 request.append('dokumen_kontrak', (dokumen_kontrak.length > 0 ? dokumen_kontrak[0] : ''));
+
                 form.forEach(value => {
-                    request.append(value.name, value.value);
+                    if (value.name === 'hri' || value.name === 'qty_hri') {
+                        currency = value.value.split('.');
+                        currency = currency.join('');
+                        request.append(value.name, currency);
+                    } else {
+                        request.append(value.name, value.value);
+                    }
                 });
 
-                // console.log(request.getAll('dokumen_kontrak'));
+                // console.log(parseInt(request.getAll('hri')));
                 
                 $.ajax({
                     type: "POST",

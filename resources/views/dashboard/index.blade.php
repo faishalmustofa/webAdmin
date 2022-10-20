@@ -19,7 +19,7 @@
             <!-- /.card-header -->
             <div class="card-body table-responsive">
                 
-                <table id="diproses" class="table responsive striped hoverable">
+                {{-- <table id="diproses" class="table responsive striped hoverable">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -64,7 +64,7 @@
                         </tr>
                         
                     </tbody>
-                </table>
+                </table> --}}
             </div>
             <!-- /.card-body -->
         </div>
@@ -79,7 +79,7 @@
             <!-- /.card-header -->
             <div class="card-body table-responsive">
                 @include('flash::message')
-                <table id="selesai" class="table table-bordered table-hover responsive striped hoverable with-buttons">
+                {{-- <table id="selesai" class="table table-bordered table-hover responsive striped hoverable with-buttons">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -156,7 +156,7 @@
                             <td>$137,500</td>
                         </tr>
                     </tbody>
-                </table>
+                </table> --}}
             </div>
             <!-- /.card-body -->
         </div>

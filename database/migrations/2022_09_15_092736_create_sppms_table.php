@@ -20,7 +20,7 @@ class CreateSPPMSTable extends Migration
                     ->onDelete('cascade')
                     ->onUpdate('cascade');
             $table->string('no_project')->nullable();
-            $table->integer('no_spk')->nullable();
+            $table->string('no_spk')->nullable();
             $table->text('uraian')->nullable();
             $table->string('kode_material')->nullable();
             $table->string('spesifikasi')->nullable();
@@ -28,7 +28,7 @@ class CreateSPPMSTable extends Migration
             $table->integer('qty_sppm')->nullable();
             $table->string('hpp')->nullable();
             $table->integer('qty_hpp')->nullable();
-            $table->string('target_kedatangan')->nullable();
+            $table->timestamp('target_kedatangan')->nullable();
             $table->string('file_teknis')->nullable();
             $table->timestamps();
         });
