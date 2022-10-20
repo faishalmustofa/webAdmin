@@ -84,22 +84,20 @@
         <div class="row" style="text-align: center">
             <div class="col">
                 {{-- Password reset link --}}
-                @if($password_reset_url)
+                {{-- @if($password_reset_url)
                     <p class="my-0">
                         <a href="{{ $password_reset_url }}">
                             {{ __('adminlte::adminlte.i_forgot_my_password') }}
                         </a>
                     </p>
-                @endif
+                @endif --}}
 
                 {{-- Register link --}}
-                @if($register_url)
-                    <p class="my-0">
-                        <a href="{{ $register_url }}">
-                            Register
-                        </a>
-                    </p>
-                @endif
+                <p class="my-0">
+                    <a href="{{ route('registration') }}">
+                        Registration
+                    </a>
+                </p>
             </div>
         </div>
     </form>

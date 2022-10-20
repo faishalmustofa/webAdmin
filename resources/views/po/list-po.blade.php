@@ -39,34 +39,26 @@
                 <table id="diproses" class="table responsive striped hoverable">
                     <thead>
                         <tr>
-                            <th>No</th>
-                            <th>ID Pemasok</th>
+                            <th>No.</th>
+                            <th>Nama Project</th>
+                            <th>No. Project</th>
+                            <th>No. SPPM</th>
+                            <th>Nomor PO</th>
+                            <th>Tanggal PO</th>
                             <th>Supplier</th>
-                            <th>Nama Barang</th>
-                            <th>Alamat</th>
-                            <th>PIC</th>
-                            <th>No. Telepon</th>
-                            <th>No. Kantor</th>
-                            <th>Email</th>
-                            <th>File Prakualifikasi</th>
+                            <th>ID Supplier</th>
+                            <th>Harga Realisasi</th>
+                            <th>Qty Harga Realisasi</th>
+                            <th>Efisiensi / Inefisiensi</th>
+                            <th>Riealisasi Kedatangan</th>
+                            <th>Metode Pembayaran</th>
+                            <th>Tempo Pembayaran</th>
+                            <th>Metode Penyerahan Barang</th>
+                            <th>Lokasi Penyerahan Barang</th>
+                            <th>Dokumen & Kontrak</th>
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Tiger Nixon</td>
-                            <td>System Architect</td>
-                            <td>Edinburgh</td>
-                            <td>61</td>
-                            <td>2011-04-25</td>
-                            <td>$320,800</td>
-                            <td>Tiger Nixon</td>
-                            <td>System Architect</td>
-                            <td>Edinburgh</td>
-                            <td></td>
-                        </tr>
-                    </tbody>
                 </table>
             </div>
             <!-- /.card-body -->

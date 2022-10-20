@@ -43,11 +43,9 @@
                                     <input 
                                         type="text" 
                                         name="nama_pembuat" 
-                                        class="form-control" 
-                                        value="{{ $admin->name }}"
-                                        {{-- placeholder="Enter Nama Pembuat..." --}}
+                                        class="form-control"
+                                        placeholder="Enter Nama Pembuat..."
                                         id="nama_pembuat"
-                                        disabled
                                     >
                                 </div>
                                 @if ($errors->has('nama_pembuat'))
@@ -60,6 +58,27 @@
 
                             <div class="form-group row">
                                 <div class="col-md-2">
+                                    <label for="nama_project">Nama Project</label>
+                                </div>
+                                <div class="col-md-10">
+                                    <input 
+                                        type="text" 
+                                        name="nama_project" 
+                                        class="form-control"
+                                        placeholder="Enter Nama Project..."
+                                        id="nama_project"
+                                    >
+                                </div>
+                                @if ($errors->has('nama_project'))
+                                    <div class="invalid-feedback">
+                                        <strong>{{ $errors->first('nama_project') }}</strong>
+                                    </div>
+                                @endif
+                                <p class="text-danger text_err" id="nama_project_err"></p>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-md-2">
                                     <label for="no_project">No. Project</label>
                                 </div>
                                 <div class="col-md-10">
@@ -67,7 +86,7 @@
                                         type="text" 
                                         name="no_project" 
                                         class="form-control" 
-                                        placeholder="Enter No. Projectt..."
+                                        placeholder="Enter No. Project..."
                                         id="no_project"
                                     >
                                 </div>
@@ -85,7 +104,7 @@
                                 </div>
                                 <div class="col-md-10">
                                     <input 
-                                        type="number" 
+                                        type="text" 
                                         name="no_sppm" 
                                         class="form-control" 
                                         placeholder="Enter No. SPPM..."
@@ -128,7 +147,7 @@
                                 </div>
                                 <div class="col-md-10">
                                     <input 
-                                        type="number" 
+                                        type="text" 
                                         name="no_spk" 
                                         class="form-control" 
                                         placeholder="No. SPK..."
@@ -275,7 +294,7 @@
                                 </div>
                                 <div class="col-md-10">
                                     <input 
-                                        type="number" 
+                                        type="text" 
                                         name="qty_hpp" 
                                         class="form-control" 
                                         placeholder="Enter Qty HPP..."
@@ -296,12 +315,12 @@
                                 </div>
                                 <div class="col-md-10">
                                     <input 
-                                        type="text" 
+                                        type="date" 
                                         name="target_kedatangan" 
                                         class="form-control" 
-                                        placeholder="Enter Target Kedatangan..."
+                                        placeholder="dd-mm-yyyy"
                                         id="target_kedatangan"
-                                    >
+                                        style="width:35%">
                                 </div>
                                 @if ($errors->has('target_kedatangan'))
                                     <div class="invalid-feedback">

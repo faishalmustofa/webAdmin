@@ -16,7 +16,6 @@ class DSMController extends Controller
     }
 
     public function getDsm(){
-        // $dsm = (new DSM);
         return view('dsm.list-dsm');
     }
 
@@ -199,8 +198,6 @@ class DSMController extends Controller
 
     public function datatables(Request $request)
     {
-        // $dives = (new Dive)->with(['coverageAreas.province','city','operator'])->get();
-        // $dsm = DSM::get();
         $dsm = (new DSM);
 
         return DataTables::of($dsm->get())

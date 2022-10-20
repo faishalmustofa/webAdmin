@@ -41,6 +41,12 @@ class User extends Authenticatable
         'login' => [
             'email' => 'required|email',
             'password' => 'required'
+        ],
+        'registration' => [
+            'name' => 'required|string',
+            'email' => 'required|email',
+            'password' => 'required|string|min:8|confirmed',
+            'role' => 'required'
         ]
     ];
 }

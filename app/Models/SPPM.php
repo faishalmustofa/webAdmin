@@ -10,6 +10,8 @@ class SPPM extends Model
 
     protected $fillable = [
         'id_pembuat',
+        'nama_pembuat',
+        'nama_project',
         'no_project',
         'no_sppm',
         'no_spk',
@@ -27,9 +29,16 @@ class SPPM extends Model
 
     protected $primaryKey = "id";
 
+    public function prosesSPPM()
+    {
+        return $this->hasOne(ProsesSPPM::class, 'id', 'id_sppm');
+    }
+
     public $rules = [
         'sppm' => [
             'id_pembuat' => 'required',
+            'nama_pembuat' => 'required',
+            'nama_project' => 'required',
             'no_project' => 'required',
             'no_sppm' => 'required',
             'no_spk' => 'required',
@@ -49,6 +58,8 @@ class SPPM extends Model
     public $messages = [
         'sppm' => [
             'id_pembuat' =>'ID Pembuat field is Required',
+            'id_pembuat' =>'Nama Pembuat field is Required',
+            'nama_project' => 'Nama Project field is Required',
             'no_project' =>'No. Project field is Required',
             'no_sppm' =>'No. SPPM field is Required',
             'no_spk' =>'No. SPK field is Required',

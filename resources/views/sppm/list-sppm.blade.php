@@ -3,7 +3,7 @@
 @section('plugins.Datatables', true)
 @section('plugins.DatatablesPlugins', true)
 
-@section('title', 'Dashboard')
+@section('title', 'List SPPM')
 
 @section('content')
     <div class="container mt-5">
@@ -22,6 +22,7 @@
                         <tr>
                             <th>No</th>
                             <th>Nama Pembuat</th>
+                            <th>Nama Project</th>
                             <th>No. Project</th>
                             <th>No. SPPM</th>
                             <th>Tanggal SPPM</th>
@@ -35,7 +36,7 @@
                             <th>Qty x HPP</th>
                             <th>Target Kedatangan</th>
                             <th>File Teknis</th>
-                            <th>Status (DONE)</th>
+                            <th>Status PO</th>
                             <th>Action</th>
                         </tr>
                     </thead>

@@ -17,11 +17,11 @@ class CreatePOSTable extends Migration
             $table->increments('id');
             $table->string('supplier')->nullable();
             $table->integer('id_supplier')->nullable();
-            $table->string('hri')->nullable();
+            $table->integer('hri')->nullable();
             $table->integer('qty_hri')->nullable();
             $table->tinyInteger('efisiensi')->nullable();
             $table->string('metode_pembayaran')->nullable();
-            $table->timestamp('tempo_pembayaran')->nullable();
+            $table->integer('tempo_pembayaran')->nullable();
             $table->string('metode_penyerahan_barang')->nullable();
             $table->string('lokasi_penyerahan_barang')->nullable();
             $table->string('dokumen_kontrak')->nullable();

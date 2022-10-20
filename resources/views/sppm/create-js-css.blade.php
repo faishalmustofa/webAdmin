@@ -21,6 +21,35 @@
     <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.2/js/toastr.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
+            hpp.addEventListener('keyup', function(e){
+                // tambahkan 'Rp.' pada saat form di ketik
+                // gunakan fungsi formatRupiah() untuk mengubah angka yang di ketik menjadi format angka
+                hpp.value = formatRupiah(this.value, '');
+            });
+            qty_hpp.addEventListener('keyup', function(e){
+                // tambahkan 'Rp.' pada saat form di ketik
+                // gunakan fungsi formatRupiah() untuk mengubah angka yang di ketik menjadi format angka
+                qty_hpp.value = formatRupiah(this.value, '');
+            });
+
+            /* Fungsi formatRupiah */
+            function formatRupiah(angka, prefix){
+                var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                split   		= number_string.split(','),
+                sisa     		= split[0].length % 3,
+                rupiah     		= split[0].substr(0, sisa),
+                ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
+                
+                // tambahkan titik jika yang di input sudah menjadi angka ribuan
+                if(ribuan){
+                    separator = sisa ? '.' : '';
+                    rupiah += separator + ribuan.join('.');
+                }
+                
+                rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+                return prefix == undefined ? rupiah : (rupiah ? rupiah : '');
+            };
+
             $('#file_teknis').on('change',function(e){
                 //get the file name
                 var fileName = $('#file_teknis')[0].files;
@@ -39,10 +68,17 @@
 
                 let file_teknis = $('#file_teknis')[0].files;
                 request.append('file_teknis', (file_teknis.length > 0 ? file_teknis[0] : ''));
+                
                 form.forEach(value => {
-                    request.append(value.name, value.value);
+                    if (value.name === 'hpp' || value.name === 'qty_hpp') {
+                        currency = value.value.split('.');
+                        currency = currency.join('');
+                        request.append(value.name, currency);
+                    } else {
+                        request.append(value.name, value.value);
+                    }
                 });
-                console.log(url)
+
                 $.ajax({
                     type: "POST",
                     url: url,

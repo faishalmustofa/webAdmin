@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\SPPM;
 
 use App\Http\Controllers\Controller;
+use App\Models\ProsesSPPM;
 use App\Models\SPPM;
 use App\User;
 use Auth;
+use Carbon\Carbon;
 use DataTables;
 use Illuminate\Http\Request;
 use Validator;
@@ -37,9 +39,14 @@ class SPPMController extends Controller
         $rules = $this->model->rules['sppm'];
         $messages = $this->model->messages['sppm'];
 
-        
+        $data = $request->all();
+        foreach ($data as $key => $value) {
+            if (($key === 'hpp') || ($key === 'qty_hpp')){
+                $data[$key] = (int)$value;
+            }
+        }
 
-        $validator = Validator::make($request->all(), $rules, $messages);
+        $validator = Validator::make($data, $rules, $messages);
         if($validator->fails()){
             if ($request->ajax()) {
                 return response()->json([
@@ -52,20 +59,7 @@ class SPPMController extends Controller
         try {
             \DB::beginTransaction();
             $user = User::where('id',$request->input('id_pembuat'))->first();
-            $data = [
-                'id_pembuat' => $user->id,
-                'no_project' => $request->input('no_project'),
-                'no_sppm' => $request->input('no_sppm'),
-                'no_spk' => $request->input('no_spk'),
-                'uraian' => $request->input('uraian'),
-                'kode_material' => $request->input('kode_material'),
-                'spesifikasi' => $request->input('spesifikasi'),
-                'satuan' => $request->input('satuan'),
-                'qty_sppm' => $request->input('qty_sppm'),
-                'hpp' => $request->input('hpp'),
-                'qty_hpp' => $request->input('qty_hpp'),
-                'target_kedatangan' => $request->input('target_kedatangan'),
-            ];
+            $data['id_pembuat'] = $user->id;
 
             if ($request->hasFile('file_teknis')){
                 $file_teknis = $request->file('file_teknis');
@@ -77,7 +71,13 @@ class SPPMController extends Controller
                 $file_teknis->move($path,$fileName);
                 $data['file_teknis'] = $fileName;
             }
-            SPPM::create($data);
+            
+            $sppm = SPPM::create($data);
+
+            ProsesSPPM::create([
+                'id_sppm' => $sppm->id,
+                'status' => $sppm->status
+            ]);
 
             \DB::commit();
             if ($request->ajax()) {
@@ -109,8 +109,9 @@ class SPPMController extends Controller
 
     public function editSppm($id){
         $data['sppm'] = SPPM::where('id',$id)->first();
+        $data['sppm']['target_kedatangan'] = Carbon::parse($data['sppm']['target_kedatangan'])->format('Y-m-d');
         $data['urlSubmit'] = route('update.sppm',$data['sppm']['id']);
-        $data['admin'] = User::where('id',$data['sppm']['id'])->first();
+        $data['admin'] = User::where('id',$data['sppm']['id_pembuat'])->first();
         return view('sppm.edit-sppm',$data);
     }
 
@@ -122,7 +123,14 @@ class SPPMController extends Controller
             $rules['file_teknis'] = "nullable";
         } 
 
-        $validator = Validator::make($request->all(), $rules, $messages);
+        $data = $request->all();
+        foreach ($data as $key => $value) {
+            if (($key === 'hpp') || ($key === 'qty_hpp')){
+                $data[$key] = (int)$value;
+            }
+        }
+
+        $validator = Validator::make($data, $rules, $messages);
         if($validator->fails()){
             if ($request->ajax()) {
                 return response()->json([
@@ -136,22 +144,6 @@ class SPPMController extends Controller
             \DB::beginTransaction();
             $sppm = SPPM::where('id',$id)->first();
 
-            $sppm->update([
-                'id_pembuat' => $request->input('id_pembuat'),
-                'no_project' => $request->input('no_project'),
-                'no_sppm' => $request->input('no_sppm'),
-                'no_spk' => $request->input('no_spk'),
-                'uraian' => $request->input('uraian'),
-                'kode_material' => $request->input('kode_material'),
-                'spesifikasi' => $request->input('spesifikasi'),
-                'satuan' => $request->input('satuan'),
-                'qty_sppm' => $request->input('qty_sppm'),
-                'hpp' => $request->input('hpp'),
-                'qty_hpp' => $request->input('qty_hpp'),
-                'target_kedatangan' => $request->input('target_kedatangan'),
-                'status' => $request->input('status'),
-            ]);
-
             if ($request->hasFile('file_teknis')){
                 $file_teknis = $request->file('file_teknis');
                 $path = public_path() . '/assets/sppm/';
@@ -161,9 +153,12 @@ class SPPMController extends Controller
                 $fileName = md5(time() . $file_teknis->getClientOriginalName()).'.'.$file_teknis->extension();
                 $file_teknis->move($path,$fileName);
                 \File::delete($path . $sppm->file_teknis);
-                $sppm->file_teknis = $fileName;
-                $sppm->update();
+                $data['file_teknis'] = $fileName;
+            } else {
+                $data['file_teknis'] = $sppm->file_teknis;
             }
+            
+            $sppm->update($data);
 
             \DB::commit();
 
@@ -211,20 +206,97 @@ class SPPMController extends Controller
         }
     }
 
+    public function detailProsesSPPM($id){
+        $data['proses_sppm'] = ProsesSPPM::where('id_sppm',$id)->with('sppm')->first();
+        $data['created_at'] = $data['proses_sppm']['sppm']['created_at']->locale('id')->translatedFormat('d F Y, H:i:s');
+        
+        $data['tgl_proses_1'] = is_null($data['proses_sppm']['tgl_proses_1']) ? null :  Carbon::parse($data['proses_sppm']['tgl_proses_1'])->locale('id')->translatedFormat('d F Y, H:i:s');
+        $data['tgl_proses_2'] = is_null($data['proses_sppm']['tgl_proses_2']) ? null :  Carbon::parse($data['proses_sppm']['tgl_proses_2'])->locale('id')->translatedFormat('d F Y, H:i:s');
+        $data['tgl_proses_3'] = is_null($data['proses_sppm']['tgl_proses_3']) ? null :  Carbon::parse($data['proses_sppm']['tgl_proses_3'])->locale('id')->translatedFormat('d F Y, H:i:s');
+        $data['tgl_proses_4'] = is_null($data['proses_sppm']['tgl_proses_4']) ? null :  Carbon::parse($data['proses_sppm']['tgl_proses_4'])->locale('id')->translatedFormat('d F Y, H:i:s');
+        $data['tgl_proses_5'] = is_null($data['proses_sppm']['tgl_proses_5']) ? null :  Carbon::parse($data['proses_sppm']['tgl_proses_5'])->locale('id')->translatedFormat('d F Y, H:i:s');
+        $data['tgl_proses_6'] = is_null($data['proses_sppm']['tgl_proses_6']) ? null :  Carbon::parse($data['proses_sppm']['tgl_proses_6'])->locale('id')->translatedFormat('d F Y, H:i:s');
+        
+        $data['urlSubmit'] = route('update.proses.sppm',$data['proses_sppm']['id']);
+        return view('sppm.detail-proses-sppm',$data);
+    }
+
+    public function updateProsesSPPM(Request $request,$id){
+
+        $proses_sppm = ProsesSPPM::where('id',$id)->with('sppm')->first();
+        if ($request->input('proses') - $proses_sppm->status > 1){
+            $messages = 'Pilih proses sesuai urutan';
+            if ($request->ajax()) {
+                return response()->json([
+                    'messages' => $messages,
+                    'status' => false
+                ], 200);
+            }
+            return back()->withInput()->withErrors($messages);
+        }
+
+        try {
+            \DB::beginTransaction();
+            $proses_sppm = ProsesSPPM::where('id',$id)->with('sppm')->first();
+            $sppm = $proses_sppm->sppm;
+            $proses = (int) $request->input('proses');
+            $tgl_proses = 'tgl_proses_'. $proses;
+
+            if ($proses != 0) {
+                $proses_sppm->update([
+                    'status' => $proses,
+                    'deskripsi' => $request->input('deskripsi'),
+                    $tgl_proses => Carbon::now()
+                ]);
+                $sppm->update([
+                    'status' => $proses
+                ]);
+            }
+            
+            $route = route('detail.proses.sppm',$sppm->id);
+
+            \DB::commit();
+
+            if ($request->ajax()) {
+                return response()->json([
+                    "status" => true,
+                    "message" => "Proses diperbarui !",
+                    "route" => $route,
+                    "data" => null
+                ]);
+            }
+
+            flash()->success('Data updated successfuly');
+            return redirect()->route('detail.proses.sppm');
+        } catch (\Exception $e) {
+            \Log::error($e);
+            \DB::rollback();
+            if (request()->ajax()) {
+                return response()->json([
+                    "success" => false,
+                    "message" => $e->getMessage(),
+                    // "message" => "Something went wrong. Failed to submit data.",
+                    "data" => null
+                ]);
+            }
+
+            flash()->error('Something went wrong. Failed to submit data.');
+            return redirect()->route('edit.sppm',$id);
+        }
+    }
+
     public function datatables(Request $request)
     {
         $dives = (new SPPM);
 
         return DataTables::of($dives->get())
-                        ->addColumn('nama_pembuat', function($data){
-                            $user = User::where('id',$data->id_pembuat)->first();
-                            $nama_pembuat = $user->name;
-                            return $nama_pembuat;
-                        })
                         ->addColumn('tgl_sppm',function($data){
-                            // $tgl_sppm = $data->created_at->format('d-m-Y');
-                            $tgl_sppm = date($data->created_at);
+                            $tgl_sppm = Carbon::parse($data->created_at)->format('d-m-Y');
                             return $tgl_sppm;
+                        })
+                        ->addColumn('target_kedatangan',function($data){
+                            $target_kedatangan = Carbon::parse($data->target_kedatangan)->format('d-m-Y');
+                            return $target_kedatangan;
                         })
                         ->addColumn('file_teknis', function($data){
                             $url = asset('assets/sppm/'.$data->file_teknis);
@@ -233,10 +305,12 @@ class SPPMController extends Controller
                             return $link;
                         })
                         ->addColumn('status',function($data){
-                            if($data->status == 0){
-                                $status = 'Diproses';
+                            $detail_proses = route('detail.proses.sppm',$data->id);
+                            $status = '';
+                            if($data->status === 6){
+                                $status .= '<a href="'.$detail_proses.'">Selesai</a>';
                             } else {
-                                $status = 'DONE';
+                                $status .= '<a href="'.$detail_proses.'">Diproses</a>';
                             }
                             return $status;
                         })
@@ -252,7 +326,7 @@ class SPPMController extends Controller
                             $button .= '</div>';
                             return $button;
                         })
-                        ->rawColumns(['nama_pembuat','tgl_sppm','file_teknis','status','action'])
+                        ->rawColumns(['tgl_sppm','target_kedatangan','file_teknis','status','action'])
                         ->addIndexColumn()
                         ->make(true);
     }

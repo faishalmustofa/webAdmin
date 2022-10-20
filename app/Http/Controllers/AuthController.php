@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Role;
+use App\UserRole;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -17,8 +18,46 @@ class AuthController extends Controller
         $this->role = $role;
     }
 
-    public function register(){
+    public function registration(){
         return view('vendor.adminlte.auth.register');
+    }
+
+    public function register(Request $request)
+    {
+        $backToLogin = redirect()->route('registration');
+
+        $validator = Validator::make($request->all(), $this->model->rules['registration']);
+        if($validator->fails()){
+            return $backToLogin->withInput()->withErrors($validator);
+        }
+
+        $user = $this->model->where('email',$request->email)->first();
+        if($user) {
+            flash()->error('Email already registered !!');
+            return back()->withInput();
+        }
+
+        try {
+            
+            $user = User::create([
+                'name' => $request->input('name'),
+                'email' => $request->input('email'),
+                'password' => Hash::make($request->input('password')),
+            ]);
+
+            UserRole::create([
+                'role_id' => $request->input('role'),
+                'user_id' => $user->id
+            ]);
+
+            flash()->success('Registrasi Berhasil !');
+            return redirect()->route('login');
+        } catch (\Exception $e) {
+            flash()->error('Something went wrong, failed to submit data');
+            \Log::error($e);
+            return back()->withInput();
+        }
+        
     }
 
     public function login(){
