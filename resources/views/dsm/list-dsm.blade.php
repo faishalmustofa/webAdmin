@@ -3,7 +3,7 @@
 @section('plugins.Datatables', true)
 @section('plugins.DatatablesPlugins', true)
 
-@section('title', 'Dashboard')
+@section('title', 'List DSM')
 
 @section('content')
     <div class="container mt-5">
@@ -22,7 +22,7 @@
                         <tr>
                             <th>No</th>
                             <th>ID Pemasok</th>
-                            <th>Supplier</th>
+                            <th>Pemasok</th>
                             <th>Nama Barang</th>
                             <th>Alamat</th>
                             <th>PIC</th>

@@ -45,8 +45,8 @@
                             <th>No. SPPM</th>
                             <th>Nomor PO</th>
                             <th>Tanggal PO</th>
-                            <th>Supplier</th>
-                            <th>ID Supplier</th>
+                            <th>Pemasok</th>
+                            <th>ID Pemasok</th>
                             <th>Harga Realisasi</th>
                             <th>Qty Harga Realisasi</th>
                             <th>Efisiensi / Inefisiensi</th>

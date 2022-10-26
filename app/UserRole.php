@@ -12,14 +12,14 @@ class UserRole extends Model
         'role_id', 'user_id',
     ];
 
-    public function user()
-    {
-        return $this->belongsTo(SPPM::class, 'role_id', 'id');
-    }
-
     public function role()
     {
-        return $this->belongsTo(SPPM::class, 'user_id', 'id');
+        return $this->belongsTo(Role::class, 'role_id', 'id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     protected $primaryKey = "id";

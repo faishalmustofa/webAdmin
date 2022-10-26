@@ -1,4 +1,3 @@
-// config/toastr.php
 <?php
 
 return [
@@ -28,7 +27,7 @@ return [
         'hideDuration'      => 1000,
         'hideEasing'        => 'linear',
         'hideMethod'        => 'fadeOut',
-        'iconClass'         => 'toast-info',
+        // 'iconClass'         => 'toast-info',
         'iconClasses'       => [
             'error'   => 'toast-error',
             'info'    => 'toast-info',
@@ -39,7 +38,7 @@ return [
         'newestOnTop'       => false,
         'onHidden'          => null,
         'onShown'           => null,
-        'positionClass'     => 'toast-top-right',
+        'positionClass'     => 'toast-bottom-right',
         'preventDuplicates' => true,
         'progressBar'       => true,
         'progressClass'     => 'toast-progress',

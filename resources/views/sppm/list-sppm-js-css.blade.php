@@ -49,16 +49,9 @@
                     {data: 'action', name: 'action'},
                 ],
                 order : ['0','asc'],
-                dom: '<"row"<"col-md-3"f><"#date-filter.col-md-3 filter-block"><"#order-status-filter.col-md-2 filter-block"><"#payment-method-filter.col-md-2 filter-block"><"#payment-status-filter.col-md-2 filter-block">>rt<"float-left"li><"float-right"p>',
+                dom: 'Blfrtip',
                 responsive: false,
-                buttons: [
-                    {
-                        text: '<i class="fa fa-plus-circle"></i> Tambah DSM',
-                        action: function ( e, dt, node, config ) {
-                            window.location = '{{ route("dsm") }}';
-                        }
-                    }
-                ],
+                buttons: ['csv', 'excel', 'pdf', 'print'],
             });
         });
         
