@@ -5,8 +5,12 @@ namespace App\Http\Controllers\DSM;
 use DataTables;
 use App\Http\Controllers\Controller;
 use App\Models\DSM;
+use App\UserRole;
+use Auth;
 use Illuminate\Http\Request;
+use JeroenNoten\LaravelAdminLte\View\Components\Widget\Alert;
 use Validator;
+use Yoeunes\Toastr\Toastr as toastr;
 
 class DSMController extends Controller
 {
@@ -20,6 +24,13 @@ class DSMController extends Controller
     }
 
     public function createDsm(){
+        $user = Auth::user();
+        $user_roles = UserRole::where('user_id',$user->id)->with('role','user')->first();
+        $admin_role = $user_roles->role;
+        if ($admin_role->slug === 'produksi'){
+            toastr()->error('Anda tidak memiliki akses untuk ke halaman ini.');
+            return redirect()->route('dsm');
+        }
         $data['form'] = [
             'route' => ['store.dsm'],
             'method' => 'POST',
@@ -208,14 +219,21 @@ class DSMController extends Controller
                             return $link;
                         })
                         ->addColumn('action', function($data){
+                            $user = Auth::user();
+                            $user_roles = UserRole::where('user_id',$user->id)->with('role','user')->first();
+                            $admin_role = $user_roles->role;
+
                             // $show_url = route('dives.show',$data->divecenter_id);
                             $edit_url = route('edit.dsm',$data->id);
                             $delete_url = route('delete.dsm',$data->id);
                             $button = '';
                             $button .= '<div class="btn-group" role="group">';
-                            // $button .= '<a class="btn" href="'.$show_url.'"><i class="fa fa-search text-info"></i></a>';
-                            $button .= '<a class="btn" href="'.$edit_url.'"><i class="fa fa-edit text-warning"></i></a>';
-                            $button .= '<a class="btn" onclick="return confirm(\'Are you sure?\')"  href="'.$delete_url.'"><i class="fa fa-trash text-danger"></i></a>';
+                            if ($admin_role->slug === 'pengadaan'){
+                                // $button .= '<a class="btn" href="'.$show_url.'"><i class="fa fa-search text-info"></i></a>';
+                                $button .= '<a class="btn" href="'.$edit_url.'"><i class="fa fa-edit text-warning"></i></a>';
+                                $button .= '<a class="btn" onclick="return confirm(\'Are you sure?\')"  href="'.$delete_url.'"><i class="fa fa-trash text-danger"></i></a>';
+                            }
+                            
                             $button .= '</div>';
                             return $button;
                         })

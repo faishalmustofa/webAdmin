@@ -21,6 +21,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'DashboardController@index')->name('dashboard');
 Route::get('/grafik', 'DashboardController@grafik')->name('grafik');
 Route::get('/get-grafik','DashboardController@getGrafik')->name('get-grafik');
+Route::post('/filter-grafik','DashboardController@filterGrafik')->name('filter.grafik');
+Route::get('/datatable-sppm-diproses','DashboardController@datatableDiproses')->name('datatable.sppm.diproses');
+Route::get('/datatable-sppm-selesai','DashboardController@datatableSelesai')->name('datatable.sppm.selesai');
 
 
 // Auth

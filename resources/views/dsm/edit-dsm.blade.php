@@ -43,14 +43,14 @@
 
                             <div class="form-group row">
                                 <div class="col-md-2">
-                                    <label for="supplier">Supplier</label>
+                                    <label for="supplier">Pemasok</label>
                                 </div>
                                 <div class="col-md-10">
                                     <input 
                                         type="text" 
                                         name="supplier" 
                                         class="form-control" 
-                                        placeholder="Enter Supplier..."
+                                        placeholder="Enter Pemasok..."
                                         value="{{ (old('supplier') ? old('supplier') : (($dsm->supplier === '') ? '' : $dsm->supplier)) }}"
                                         id="supplier"
                                     >

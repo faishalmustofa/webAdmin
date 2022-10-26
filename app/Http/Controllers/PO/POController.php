@@ -5,6 +5,8 @@ namespace App\Http\Controllers\PO;
 use App\Http\Controllers\Controller;
 use App\Models\PO;
 use App\Models\SPPM;
+use App\UserRole;
+use Auth;
 use Carbon\Carbon;
 use DataTables;
 use Illuminate\Http\Request;
@@ -23,6 +25,14 @@ class POController extends Controller
     }
 
     public function createPo(){
+        $user = Auth::user();
+        $user_roles = UserRole::where('user_id',$user->id)->with('role','user')->first();
+        $admin_role = $user_roles->role;
+        if ($admin_role->slug === 'produksi'){
+            toastr()->error('Anda tidak memiliki akses untuk ke halaman ini.');
+            return redirect()->route('dsm');
+        }
+
         $data['sppm'] = SPPM::get();
         $data['form'] = [
             'route' => ['store.po'],
@@ -275,14 +285,20 @@ class POController extends Controller
                             return $link;
                         })
                         ->addColumn('action', function($data){
+                            $user = Auth::user();
+                            $user_roles = UserRole::where('user_id',$user->id)->with('role','user')->first();
+                            $admin_role = $user_roles->role;
+
                             // $show_url = route('dives.show',$data->divecenter_id);
                             $edit_url = route('edit.po',$data->id);
                             $delete_url = route('delete.po',$data->id);
                             $button = '';
                             $button .= '<div class="btn-group" role="group">';
-                            // $button .= '<a class="btn" href="'.$show_url.'"><i class="fa fa-search text-info"></i></a>';
-                            $button .= '<a class="btn" href="'.$edit_url.'"><i class="fa fa-edit text-warning"></i></a>';
-                            $button .= '<a class="btn" onclick="return confirm(\'Are you sure?\')"  href="'.$delete_url.'"><i class="fa fa-trash text-danger"></i></a>';
+                            if ($admin_role->slug === 'pengadaan'){
+                                // $button .= '<a class="btn" href="'.$show_url.'"><i class="fa fa-search text-info"></i></a>';
+                                $button .= '<a class="btn" href="'.$edit_url.'"><i class="fa fa-edit text-warning"></i></a>';
+                                $button .= '<a class="btn" onclick="return confirm(\'Are you sure?\')"  href="'.$delete_url.'"><i class="fa fa-trash text-danger"></i></a>';
+                            }
                             $button .= '</div>';
                             return $button;
                         })

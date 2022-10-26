@@ -347,7 +347,6 @@
                                             Choose a file
                                          </label>
                                     </div>
-                                    
                                 </div>
                                 @if ($errors->has('file_teknis'))
                                     <div class="invalid-feedback">
@@ -362,11 +361,18 @@
                                     <label for="status">Status</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <select class="custom-select" name="status" id="status" style="width:35%">
-                                        <option class="text-center" value=""> -- Select Status -- </option>
-                                        <option class="text-center" value="0" {{ (old('status') ? 'selected' : '') }}>Diproses</option>
-                                        <option class="text-center" value="1" {{ (old('status') ? 'selected' : '') }}>DONE</option>
-                                    </select>
+                                    @if ($admin_role->slug === 'pengadaan')
+                                        <select class="custom-select" name="status" id="status" style="width:35%">
+                                            <option class="text-center" value=""> -- Select Status -- </option>
+                                            <option class="text-center" value="0" {{ (old('status') ? 'selected' : '') }}>Diproses</option>
+                                            <option class="text-center" value="1" {{ (old('status') ? 'selected' : '') }}>DONE</option>
+                                        </select>
+                                    @else
+                                        <select class="custom-select" name="status" id="status" style="width:35%" disabled>
+                                            <option class="text-center" value=""> -- Select Status -- </option>
+                                            <option class="text-center" value="0" selected>Diproses</option>
+                                        </select>
+                                    @endif
                                 </div>
                                 @if ($errors->has('status'))
                                     <div class="invalid-feedback">

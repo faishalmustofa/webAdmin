@@ -5,7 +5,9 @@ namespace App\Http\Controllers\SPPM;
 use App\Http\Controllers\Controller;
 use App\Models\ProsesSPPM;
 use App\Models\SPPM;
+use App\Role;
 use App\User;
+use App\UserRole;
 use Auth;
 use Carbon\Carbon;
 use DataTables;
@@ -24,6 +26,9 @@ class SPPMController extends Controller
     }
 
     public function createSppm(){
+        $user = Auth::user();
+        $user_roles = UserRole::where('user_id',$user->id)->with('role','user')->first();
+        $data['admin_role'] = $user_roles->role;
         $data['form'] = [
             'route' => ['store.sppm'],
             'method' => 'POST',
@@ -108,6 +113,9 @@ class SPPMController extends Controller
     }
 
     public function editSppm($id){
+        $user = Auth::user();
+        $user_roles = UserRole::where('user_id',$user->id)->with('role','user')->first();
+        $data['admin_role'] = $user_roles->role;
         $data['sppm'] = SPPM::where('id',$id)->first();
         $data['sppm']['target_kedatangan'] = Carbon::parse($data['sppm']['target_kedatangan'])->format('Y-m-d');
         $data['urlSubmit'] = route('update.sppm',$data['sppm']['id']);
@@ -207,6 +215,9 @@ class SPPMController extends Controller
     }
 
     public function detailProsesSPPM($id){
+        $user = Auth::user();
+        $user_roles = UserRole::where('user_id',$user->id)->with('role','user')->first();
+        $data['admin_role'] = $user_roles->role;
         $data['proses_sppm'] = ProsesSPPM::where('id_sppm',$id)->with('sppm')->first();
         $data['created_at'] = $data['proses_sppm']['sppm']['created_at']->locale('id')->translatedFormat('d F Y, H:i:s');
         

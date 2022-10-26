@@ -56,14 +56,14 @@
 
                             <div class="form-group row">
                                 <div class="col-md-2">
-                                    <label for="supplier">Supplier</label>
+                                    <label for="supplier">Pemasok</label>
                                 </div>
                                 <div class="col-md-10">
                                     <input 
                                         type="text" 
                                         name="supplier" 
                                         class="form-control" 
-                                        placeholder="Enter Supplier..."
+                                        placeholder="Enter Pemasok..."
                                         id="supplier"
                                     >
                                 </div>
@@ -77,14 +77,14 @@
 
                             <div class="form-group row">
                                 <div class="col-md-2">
-                                    <label for="id_supplier">ID Supplier</label>
+                                    <label for="id_supplier">ID Pemasok</label>
                                 </div>
                                 <div class="col-md-10">
                                     <input 
                                         type="text" 
                                         name="id_supplier" 
                                         class="form-control" 
-                                        placeholder="Enter ID Supplier..."
+                                        placeholder="Enter ID Pemasok..."
                                         id="id_supplier"
                                         >
                                 </div>

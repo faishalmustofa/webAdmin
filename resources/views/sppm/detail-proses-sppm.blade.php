@@ -16,18 +16,31 @@
                 <div class="form-proses text-center mb-3">
                     <form action="{{ route('update.proses.sppm',$proses_sppm->sppm->id) }}" id="updateProsesSPPM" method="POST" enctype="multipart/form-data">
                         @csrf
-                        <select class="custom-select text-center" name="proses" id="proses" style="width: 50%;border:solid 2px">
-                            <option value="0" {{ ( old('proses') ? old('proses') : ($proses_sppm->status === 0 ? 'selected' : '') ) }} >Diterima</option>
-                            <option value="1" {{ ( old('proses') ? old('proses') : ($proses_sppm->status === 1 ? 'selected' : '') ) }} >Prakualifikasi Supplier</option>
-                            <option value="2" {{ ( old('proses') ? old('proses') : ($proses_sppm->status === 2 ? 'selected' : '') ) }} >Pengusulan RAB dan Material</option>
-                            <option value="3" {{ ( old('proses') ? old('proses') : ($proses_sppm->status === 3 ? 'selected' : '') ) }} >Penawaran supplier</option>
-                            <option value="4" {{ ( old('proses') ? old('proses') : ($proses_sppm->status === 4 ? 'selected' : '') ) }} >Pembuatan PO</option>
-                            <option value="5" {{ ( old('proses') ? old('proses') : ($proses_sppm->status === 5 ? 'selected' : '') ) }} >Pembelian</option>
-                            <option value="6" {{ ( old('proses') ? old('proses') : ($proses_sppm->status === 6 ? 'selected' : '') ) }} >Selesai</option>
-                        </select>
+                        @if ($admin_role->slug === 'pengadaan')
+                            <select class="custom-select text-center" name="proses" id="proses" style="width: 50%;border:solid 2px">
+                                <option value="0" {{ ( old('proses') ? old('proses') : ($proses_sppm->status === 0 ? 'selected' : '') ) }} >Diterima</option>
+                                <option value="1" {{ ( old('proses') ? old('proses') : ($proses_sppm->status === 1 ? 'selected' : '') ) }} >Prakualifikasi Supplier</option>
+                                <option value="2" {{ ( old('proses') ? old('proses') : ($proses_sppm->status === 2 ? 'selected' : '') ) }} >Pengusulan RAB dan Material</option>
+                                <option value="3" {{ ( old('proses') ? old('proses') : ($proses_sppm->status === 3 ? 'selected' : '') ) }} >Penawaran supplier</option>
+                                <option value="4" {{ ( old('proses') ? old('proses') : ($proses_sppm->status === 4 ? 'selected' : '') ) }} >Pembuatan PO</option>
+                                <option value="5" {{ ( old('proses') ? old('proses') : ($proses_sppm->status === 5 ? 'selected' : '') ) }} >Pembelian</option>
+                                <option value="6" {{ ( old('proses') ? old('proses') : ($proses_sppm->status === 6 ? 'selected' : '') ) }} >Selesai</option>
+                            </select>
 
-                        <input type="text" name="deskripsi" id="deskripsi" value="" hidden>
-                        
+                            <input type="text" name="deskripsi" id="deskripsi" value="" hidden>
+                        @else
+                            <select class="custom-select text-center" name="proses" id="proses" style="width: 50%;border:solid 2px" disabled>
+                                <option value="0" {{ ( old('proses') ? old('proses') : ($proses_sppm->status === 0 ? 'selected' : '') ) }} >Diterima</option>
+                                <option value="1" {{ ( old('proses') ? old('proses') : ($proses_sppm->status === 1 ? 'selected' : '') ) }} >Prakualifikasi Supplier</option>
+                                <option value="2" {{ ( old('proses') ? old('proses') : ($proses_sppm->status === 2 ? 'selected' : '') ) }} >Pengusulan RAB dan Material</option>
+                                <option value="3" {{ ( old('proses') ? old('proses') : ($proses_sppm->status === 3 ? 'selected' : '') ) }} >Penawaran supplier</option>
+                                <option value="4" {{ ( old('proses') ? old('proses') : ($proses_sppm->status === 4 ? 'selected' : '') ) }} >Pembuatan PO</option>
+                                <option value="5" {{ ( old('proses') ? old('proses') : ($proses_sppm->status === 5 ? 'selected' : '') ) }} >Pembelian</option>
+                                <option value="6" {{ ( old('proses') ? old('proses') : ($proses_sppm->status === 6 ? 'selected' : '') ) }} >Selesai</option>
+                            </select>
+
+                            <input type="text" name="deskripsi" id="deskripsi" value="" hidden>
+                        @endif
                     </form>
                 </div>
                 

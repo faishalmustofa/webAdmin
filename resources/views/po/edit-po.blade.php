@@ -41,14 +41,14 @@
 
                             <div class="form-group row">
                                 <div class="col-md-2">
-                                    <label for="supplier">Supplier</label>
+                                    <label for="supplier">Pemasok</label>
                                 </div>
                                 <div class="col-md-10">
                                     <input 
                                         type="text" 
                                         name="supplier" 
                                         class="form-control" 
-                                        placeholder="Enter Supplier..."
+                                        placeholder="Enter Pemasok..."
                                         value="{{ (old('supplier') ? old('supplier') : (($po->supplier === '') ? '' : $po->supplier)) }}"
                                         id="supplier"
                                     >
@@ -63,14 +63,14 @@
 
                             <div class="form-group row">
                                 <div class="col-md-2">
-                                    <label for="id_supplier">ID Supplier</label>
+                                    <label for="id_supplier">ID Pemasok</label>
                                 </div>
                                 <div class="col-md-10">
                                     <input 
                                         type="text" 
                                         name="id_supplier" 
                                         class="form-control" 
-                                        placeholder="Enter ID Supplier..."
+                                        placeholder="Enter ID Pemasok..."
                                         value="{{ (old('id_supplier') ? old('id_supplier') : (($po->id_supplier === '') ? '' : $po->id_supplier)) }}"
                                         id="id_supplier"
                                         >

@@ -1,6 +1,6 @@
 @inject('layoutHelper', 'JeroenNoten\LaravelAdminLte\Helpers\LayoutHelper')
 
-@php( $dashboard_url = View::getSection('dashboard_url') ?? config('adminlte.dashboard_url', 'home') )
+@php( $dashboard_url = View::getSection('dashboard_url') ?? config('adminlte.dashboard_url', 'dashboard') )
 
 @if (config('adminlte.use_route_url', false))
     @php( $dashboard_url = $dashboard_url ? route($dashboard_url) : '' )
@@ -8,7 +8,7 @@
     @php( $dashboard_url = $dashboard_url ? url($dashboard_url) : '' )
 @endif
 
-<a href="{{ $dashboard_url }}"
+<a href="{{ route('dashboard') }}"
     @if($layoutHelper->isLayoutTopnavEnabled())
         class="navbar-brand {{ config('adminlte.classes_brand') }}"
     @else
@@ -23,7 +23,7 @@
 
     {{-- Brand text --}}
     <span class="brand-text font-weight-light {{ config('adminlte.classes_brand_text') }}">
-        {!! config('adminlte.logo', '<b>Admin</b>LTE') !!}
+        <b>E-DanWinner</b>
     </span>
 
 </a>
