@@ -9,7 +9,6 @@ class DSM extends Model
     protected $table = "dsms";
 
     protected $fillable = [
-        'id_pemasok',
         'supplier',
         'nama_barang',
         'alamat',
@@ -24,7 +23,6 @@ class DSM extends Model
 
     public $rules = [
         'dsm' => [
-            'id_pemasok' =>'required|integer',
             'supplier' =>'required',
             'nama_barang' =>'required',
             'alamat' =>'required',
@@ -38,7 +36,6 @@ class DSM extends Model
 
     public $messages = [
         'dsm' => [
-            'id_pemasok' =>'ID Pemasok field is Required',
             'supplier' =>'Supplier field is Required',
             'nama_barang' =>'Nama Barang field is Required',
             'alamat' =>'Alamat field is Required',

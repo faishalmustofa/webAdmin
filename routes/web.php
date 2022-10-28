@@ -74,6 +74,7 @@ Route::namespace("PO")->group(function (){
     Route::get('/edit-po/{id}', 'POController@editPo')->name('edit.po');
     Route::post('/update-po/{id}', 'POController@updatePo')->name('update.po');
     Route::get('/delete-po/{id}', 'POController@deletePo')->name('delete.po');
+    Route::get('/get-print-po/{id}', 'POController@getPrintPO')->name('get.print.po');
 
     Route::get('/datatable-po','POController@datatables')->name('datatable.po');
 });
@@ -88,6 +89,8 @@ Route::namespace("SPPM")->group(function (){
     Route::get('/delete-sppm/{id}', 'SPPMController@deleteSppm')->name('delete.sppm');
     Route::get('/detail-proses-sppm/{id}', 'SPPMController@detailProsesSPPM')->name('detail.proses.sppm');
     Route::post('/update-proses-sppm/{id}', 'SPPMController@updateProsesSPPM')->name('update.proses.sppm');
+    Route::get('/get-print-sppm/{id}', 'SPPMController@getPrintSPPM')->name('get.print.sppm');
+    Route::get('/print-sppm', 'SPPMController@printSPPM')->name('print.sppm');
 
     Route::get('/datatable-sppm','SPPMController@datatables')->name('datatable.sppm');
 });

@@ -21,6 +21,11 @@
     <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.2/js/toastr.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
+            penawaran.addEventListener('keyup', function(e){
+                // tambahkan 'Rp.' pada saat form di ketik
+                // gunakan fungsi formatRupiah() untuk mengubah angka yang di ketik menjadi format angka
+                penawaran.value = formatRupiah(this.value, '');
+            });
             hri.addEventListener('keyup', function(e){
                 // tambahkan 'Rp.' pada saat form di ketik
                 // gunakan fungsi formatRupiah() untuk mengubah angka yang di ketik menjadi format angka
@@ -57,6 +62,10 @@
                 $(this).next('.custom-file-label').html(fileName[0].name);
             });
 
+            $('#supplier').on('change',function(e){
+                $('#id_supplier').val(this.value);
+            });
+
             $('#btnSumbit').click(function(e){
                 e.preventDefault();
                 let $this = $(this);
@@ -67,7 +76,7 @@
                 let request = new FormData();
 
                 form.forEach(value => {
-                    if (value.name === 'hri' || value.name === 'qty_hri') {
+                    if (value.name === 'hri' || value.name === 'qty_hri' || value.name === 'penawaran') {
                         currency = value.value.split('.');
                         currency = currency.join('');
                         request.append(value.name, currency);

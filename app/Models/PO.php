@@ -9,6 +9,7 @@ class PO extends Model
     protected $table = "pos";
 
     protected $fillable = [
+        'id_dsm',
         'id_sppm',
         'supplier',
         'id_supplier',
@@ -20,6 +21,8 @@ class PO extends Model
         'tempo_pembayaran',
         'metode_penyerahan_barang',
         'lokasi_penyerahan_barang',
+        'penawaran',
+        'tgl_penawaran',
         'dokumen_kontrak'
     ];
 
@@ -28,6 +31,11 @@ class PO extends Model
     public function sppm()
     {
         return $this->belongsTo(SPPM::class, 'id_sppm', 'id');
+    }
+
+    public function dsm()
+    {
+        return $this->belongsTo(DSM::class, 'id_dsm', 'id');
     }
 
     public $rules = [
@@ -43,6 +51,8 @@ class PO extends Model
             'tempo_pembayaran' => 'required',
             'metode_penyerahan_barang' => 'required',
             'lokasi_penyerahan_barang' => 'required',
+            'penawaran' => 'required',
+            'tgl_penawaran' => 'required',
             'dokumen_kontrak' => 'required|mimes:pdf',
         ]
     ];
@@ -59,6 +69,8 @@ class PO extends Model
             'tempo_pembayaran' => 'Tempo Pembayaran field is Required',
             'metode_penyerahan_barang' => 'Metode Penyerahan Barang field is Required',
             'lokasi_penyerahan_barang' => 'Lokasi Penyerahan Barang field is Required',
+            'penawaran' => 'Penawaran field is Required',
+            'tgl_penawaran' => 'Tanggal penawaran field is Required',
             'dokumen_kontrak' => 'Dokumen & Kontrak field is Required',
         ]
     ];

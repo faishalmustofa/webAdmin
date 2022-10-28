@@ -63,7 +63,7 @@
                                 <p class="text-danger text_err" id="nama_project_err"></p>
                             </div>
 
-                            <div class="form-group row">
+                            {{-- <div class="form-group row">
                                 <div class="col-md-2">
                                     <label for="no_project">No. Project</label>
                                 </div>
@@ -83,7 +83,7 @@
                                     </div>
                                 @endif
                                 <p class="text-danger text_err" id="no_project_err"></p>
-                            </div>
+                            </div> --}}
 
                             <div class="form-group row">
                                 <div class="col-md-2">
@@ -361,11 +361,20 @@
                                     <label for="status">Status</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <select class="custom-select" name="status" id="status" style="width:35%">
-                                        <option class="text-center" value=""> -- Select Status -- </option>
-                                        <option class="text-center" value="0" {{ (old('status') ? old('status') : (($sppm->status === 0) ? 'selected' : '')) }}>Diproses</option>
-                                        <option class="text-center" value="1" {{ (old('status') ? old('status') : (($sppm->status === 1) ? 'selected' : '')) }}>DONE</option>
-                                    </select>
+                                    @if ($admin_role->slug === 'pengadaan')
+                                        <select class="custom-select" name="status" id="status" style="width:35%">
+                                            <option class="text-center" value=""> -- Select Status -- </option>
+                                            <option class="text-center" value="0" {{ (old('status') ? old('status') : (($sppm->status === 0) ? 'selected' : '')) }}>Diproses</option>
+                                            <option class="text-center" value="6" {{ (old('status') ? old('status') : (($sppm->status === 6) ? 'selected' : '')) }}>DONE</option>
+                                        </select>
+                                    @else
+                                        <select class="custom-select" name="status" id="status" style="width:35%" disabled>
+                                            <option class="text-center" value=""> -- Select Status -- </option>
+                                            <option class="text-center" value="0" {{ (old('status') ? old('status') : (($sppm->status === 0) ? 'selected' : '')) }}>Diproses</option>
+                                            <option class="text-center" value="6" {{ (old('status') ? old('status') : (($sppm->status === 6) ? 'selected' : '')) }}>DONE</option>
+                                        </select>
+                                    @endif
+                                    
                                 </div>
                                 @if ($errors->has('status'))
                                     <div class="invalid-feedback">
@@ -373,6 +382,21 @@
                                     </div>
                                 @endif
                                 <p class="text-danger text_err" id="status_err"></p>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-md-2">
+                                    <label for="keterangan">Keterangan</label>
+                                </div>
+                                <div class="col-md-10">
+                                    <textarea type="text" name="keterangan" class="form-control" placeholder="Enter Keterangan..." value="{{ (old('keterangan') ? old('keterangan') : (is_null($sppm->keterangan) ? '' : $sppm->keterangan)) }}" id="keterangan">{{ (old('keterangan') ? old('keterangan') : (is_null($sppm->keterangan) ? '' : $sppm->keterangan)) }}</textarea>
+                                </div>
+                                @if ($errors->has('keterangan'))
+                                    <div class="invalid-feedback">
+                                        <strong>{{ $errors->first('keterangan') }}</strong>
+                                    </div>
+                                @endif
+                                <p class="text-danger text_err" id="keterangan_err"></p>
                             </div>
 
                             <div class="d-flex justify-content-end">

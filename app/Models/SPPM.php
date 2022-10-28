@@ -12,7 +12,6 @@ class SPPM extends Model
         'id_pembuat',
         'nama_pembuat',
         'nama_project',
-        'no_project',
         'no_sppm',
         'no_spk',
         'uraian',
@@ -24,7 +23,8 @@ class SPPM extends Model
         'qty_hpp',
         'target_kedatangan',
         'file_teknis',
-        'status'
+        'status',
+        'keterangan'
     ];
 
     protected $primaryKey = "id";
@@ -39,7 +39,6 @@ class SPPM extends Model
             'id_pembuat' => 'required',
             'nama_pembuat' => 'required',
             'nama_project' => 'required',
-            'no_project' => 'required',
             'no_sppm' => 'required',
             'no_spk' => 'required',
             'uraian' => 'required',
@@ -51,7 +50,8 @@ class SPPM extends Model
             'qty_hpp' => 'required',
             'target_kedatangan' => 'required',
             'file_teknis' => 'required|mimes:pdf',
-            'status' => 'required'
+            'status' => 'required',
+            'keterangan' => 'required',
         ]
     ];
 
@@ -60,7 +60,6 @@ class SPPM extends Model
             'id_pembuat' =>'ID Pembuat field is Required',
             'id_pembuat' =>'Nama Pembuat field is Required',
             'nama_project' => 'Nama Project field is Required',
-            'no_project' =>'No. Project field is Required',
             'no_sppm' =>'No. SPPM field is Required',
             'no_spk' =>'No. SPK field is Required',
             'uraian' =>'Uraian field is Required',
@@ -73,6 +72,7 @@ class SPPM extends Model
             'target_kedatangan' =>'Target Kedatangan field is Required',
             'file_teknis' =>'File Teknis field is Required',
             'status' =>'Status field is Required',
+            'keterangan' => 'Keterangan field is Required',
         ]
     ];
 }
