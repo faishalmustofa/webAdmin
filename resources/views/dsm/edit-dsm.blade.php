@@ -21,36 +21,14 @@
                             @include('flash::message')
                             <div class="form-group row">
                                 <div class="col-md-2">
-                                    <label for="id_pemasok">ID Pemasok</label>
-                                </div>
-                                <div class="col-md-10">
-                                    <input 
-                                        type="number" 
-                                        name="id_pemasok" 
-                                        class="form-control" 
-                                        placeholder="Enter ID Pemasok..."
-                                        value="{{ (old('id_pemasok') ? old('id_pemasok') : (($dsm->id_pemasok === '') ? '' : $dsm->id_pemasok)) }}"
-                                        id="id_pemasok"
-                                    >
-                                </div>
-                                @if ($errors->has('id_pemasok'))
-                                    <div class="invalid-feedback">
-                                        <strong>{{ $errors->first('id_pemasok') }}</strong>
-                                    </div>
-                                @endif
-                                <p class="text-danger text_err" id="id_pemasok_err"></p>
-                            </div>
-
-                            <div class="form-group row">
-                                <div class="col-md-2">
-                                    <label for="supplier">Pemasok</label>
+                                    <label for="supplier">Nama Pemasok</label>
                                 </div>
                                 <div class="col-md-10">
                                     <input 
                                         type="text" 
                                         name="supplier" 
                                         class="form-control" 
-                                        placeholder="Enter Pemasok..."
+                                        placeholder="Enter Nama Pemasok..."
                                         value="{{ (old('supplier') ? old('supplier') : (($dsm->supplier === '') ? '' : $dsm->supplier)) }}"
                                         id="supplier"
                                     >

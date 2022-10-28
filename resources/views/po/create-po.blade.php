@@ -56,6 +56,26 @@
 
                             <div class="form-group row">
                                 <div class="col-md-2">
+                                    <label for="id_sppm">Pemasok</label>
+                                </div>
+                                <div class="col-md-10">
+                                    <select class="custom-select" name="supplier" id="supplier" style="width:35%">
+                                        <option class="text-center" value="">-- Select Pemasok --</option>
+                                        @foreach ($dsm as $item)
+                                            <option class="text-center" value="{{$item->id}}">{{ $item->supplier }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                @if ($errors->has('supplier'))
+                                    <div class="invalid-feedback">
+                                        <strong>{{ $errors->first('supplier') }}</strong>
+                                    </div>
+                                @endif
+                                <p class="text-danger text_err" id="supplier_err"></p>
+                            </div>
+
+                            {{-- <div class="form-group row">
+                                <div class="col-md-2">
                                     <label for="supplier">Pemasok</label>
                                 </div>
                                 <div class="col-md-10">
@@ -73,7 +93,7 @@
                                     </div>
                                 @endif
                                 <p class="text-danger text_err" id="supplier_err"></p>
-                            </div>
+                            </div> --}}
 
                             <div class="form-group row">
                                 <div class="col-md-2">
@@ -84,9 +104,9 @@
                                         type="text" 
                                         name="id_supplier" 
                                         class="form-control" 
-                                        placeholder="Enter ID Pemasok..."
+                                        placeholder="ID Pemasok..."
                                         id="id_supplier"
-                                        >
+                                        disabled>
                                 </div>
                                 @if ($errors->has('id_supplier'))
                                     <div class="invalid-feedback">
@@ -269,6 +289,47 @@
                                     <p class="text-danger text_err" id="lokasi_penyerahan_barang_err"></p>
                                 </div>
                             <hr>
+
+                            <div class="form-group row">
+                                <div class="col-md-2">
+                                    <label for="penawaran">Penawaran</label>
+                                </div>
+                                <div class="col-md-10">
+                                    <input 
+                                        type="text" 
+                                        name="penawaran" 
+                                        class="form-control" 
+                                        placeholder="Enter Penawaran..."
+                                        id="penawaran">
+                                </div>
+                                @if ($errors->has('penawaran'))
+                                    <div class="invalid-feedback">
+                                        <strong>{{ $errors->first('penawaran') }}</strong>
+                                    </div>
+                                @endif
+                                <p class="text-danger text_err" id="penawaran_err"></p>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-md-2">
+                                    <label for="tgl_penawaran">Tanggal Penawaran</label>
+                                </div>
+                                <div class="col-md-10">
+                                    <input 
+                                        type="date" 
+                                        name="tgl_penawaran" 
+                                        class="form-control" 
+                                        placeholder="dd-mm-yyyy"
+                                        id="tgl_penawaran"
+                                        style="width:35%">
+                                </div>
+                                @if ($errors->has('tgl_penawaran'))
+                                    <div class="invalid-feedback">
+                                        <strong>{{ $errors->first('tgl_penawaran') }}</strong>
+                                    </div>
+                                @endif
+                                <p class="text-danger text_err" id="tgl_penawaran_err"></p>
+                            </div>
 
                             <div class="form-group row">
                                 <div class="col-md-2">

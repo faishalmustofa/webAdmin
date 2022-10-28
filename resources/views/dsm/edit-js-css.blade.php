@@ -70,8 +70,8 @@
                         } else {
                             swal.fire({
                                 icon: 'success',
-                                title: 'Created',
-                                text: 'Data has been created! '
+                                title: 'Updated',
+                                text: 'Data has been updated! '
                             }).then(() => {
                                 window.location.href = '{{ route("dsm") }}';
                             });

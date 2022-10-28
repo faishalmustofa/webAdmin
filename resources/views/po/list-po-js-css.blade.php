@@ -29,6 +29,7 @@
                     {data: 'metode_penyerahan_barang', name: 'metode_penyerahan_barang', searchable:false},
                     {data: 'lokasi_penyerahan_barang', name: 'lokasi_penyerahan_barang', searchable:false},
                     {data: 'dokumen_kontrak', name: 'dokumen_kontrak', searchable:false},
+                    {data: 'print', name: 'print'},
                     {data: 'action', name: 'action'},
                 ],
                 order : ['0','asc'],

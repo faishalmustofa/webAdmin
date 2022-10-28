@@ -15,7 +15,6 @@ class CreateDSMSTable extends Migration
     {
         Schema::create('dsms', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('id_pemasok')->nullable();
             $table->string('supplier')->nullable();
             $table->string('nama_barang')->nullable();
             $table->string('alamat',250)->nullable();

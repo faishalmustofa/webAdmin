@@ -19,11 +19,13 @@ class DSMController extends Controller
         $this->model = $model;
     }
 
-    public function getDsm(){
+    public function getDsm()
+    {
         return view('dsm.list-dsm');
     }
 
-    public function createDsm(){
+    public function createDsm()
+    {
         $user = Auth::user();
         $user_roles = UserRole::where('user_id',$user->id)->with('role','user')->first();
         $admin_role = $user_roles->role;
@@ -109,13 +111,15 @@ class DSMController extends Controller
         }
     }
 
-    public function editDsm($id){
+    public function editDsm($id)
+    {
         $data['dsm'] = DSM::where('id',$id)->first();
         $data['urlSubmit'] = route('update.dsm',$data['dsm']['id']);
         return view('dsm.edit-dsm',$data);
     }
 
-    public function updateDsm(Request $request,$id){
+    public function updateDsm(Request $request,$id)
+    {
         $rules = $this->model->rules['dsm'];
         $messages = $this->model->messages['dsm'];
 
@@ -190,7 +194,8 @@ class DSMController extends Controller
         }
     }
 
-    public function deleteDsm($id){
+    public function deleteDsm($id)
+    {
         try {
             $dsm = DSM::findorfail($id);
             
@@ -212,6 +217,10 @@ class DSMController extends Controller
         $dsm = (new DSM);
 
         return DataTables::of($dsm->get())
+                        ->addColumn('id_pemasok', function($data){
+                            $id_pemasok = $data->id;
+                            return $id_pemasok;
+                        })                
                         ->addColumn('file_prakualifikasi', function($data){
                             $url = asset('assets/dsm/'.$data->file_prakualifikasi);
                             $link = '';
@@ -237,8 +246,19 @@ class DSMController extends Controller
                             $button .= '</div>';
                             return $button;
                         })
-                        ->rawColumns(['file_prakualifikasi','action'])
+                        ->rawColumns(['id_pemasok','file_prakualifikasi','action'])
                         ->addIndexColumn()
                         ->make(true);
+    }
+
+
+    public function testView()
+    {
+        return view();
+    }
+
+    public function printDSM()
+    {
+
     }
 }

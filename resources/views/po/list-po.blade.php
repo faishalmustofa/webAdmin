@@ -56,6 +56,7 @@
                             <th>Metode Penyerahan Barang</th>
                             <th>Lokasi Penyerahan Barang</th>
                             <th>Dokumen & Kontrak</th>
+                            <th>Print</th>
                             <th>Action</th>
                         </tr>
                     </thead>

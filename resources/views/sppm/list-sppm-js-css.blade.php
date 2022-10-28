@@ -14,6 +14,9 @@
     table.dataTable thead .sorting_asc:after {
         display: none;
     }
+    .dt-buttons {
+        margin-bottom: 10px;
+    }
  </style>
 @stop
 @section('js')
@@ -46,12 +49,12 @@
                     {data: 'target_kedatangan', name: 'target_kedatangan', searchable:false},
                     {data: 'file_teknis', name: 'file_teknis', searchable:false},
                     {data: 'status', name: 'status', searchable:false},
+                    {data: 'print', name: 'print'},
                     {data: 'action', name: 'action'},
                 ],
                 order : ['0','asc'],
                 dom: 'Blfrtip',
                 responsive: false,
-                buttons: ['csv', 'excel', 'pdf', 'print'],
             });
         });
         

@@ -19,7 +19,6 @@ class CreateSPPMSTable extends Migration
             $table->foreign('id_pembuat')->references('id')->on('users')
                     ->onDelete('cascade')
                     ->onUpdate('cascade');
-            $table->string('no_project')->nullable();
             $table->string('no_spk')->nullable();
             $table->text('uraian')->nullable();
             $table->string('kode_material')->nullable();

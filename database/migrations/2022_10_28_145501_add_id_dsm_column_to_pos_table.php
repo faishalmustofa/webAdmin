@@ -1,0 +1,35 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class AddIdDsmColumnToPosTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::table('pos', function (Blueprint $table) {
+            $table->unsignedInteger('id_dsm')->nullable()->after('id_sppm');
+            $table->foreign('id_dsm')->references('id')->on('dsms')
+                    ->onDelete('cascade')
+                    ->onUpdate('cascade');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('pos', function (Blueprint $table) {
+            $table->dropColumn('id_dsm');
+        });
+    }
+}

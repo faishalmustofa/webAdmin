@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\PO;
 
 use App\Http\Controllers\Controller;
+use App\Models\DSM;
 use App\Models\PO;
 use App\Models\SPPM;
 use App\UserRole;
 use Auth;
+use Barryvdh\DomPDF\PDF;
 use Carbon\Carbon;
 use DataTables;
 use Illuminate\Http\Request;
@@ -20,11 +22,13 @@ class POController extends Controller
         $this->model = $model;
     }
 
-    public function getPo(){
+    public function getPo()
+    {
         return view('po.list-po');
     }
 
-    public function createPo(){
+    public function createPo()
+    {
         $user = Auth::user();
         $user_roles = UserRole::where('user_id',$user->id)->with('role','user')->first();
         $admin_role = $user_roles->role;
@@ -34,6 +38,7 @@ class POController extends Controller
         }
 
         $data['sppm'] = SPPM::get();
+        $data['dsm'] = DSM::get();
         $data['form'] = [
             'route' => ['store.po'],
             'method' => 'POST',
@@ -51,7 +56,7 @@ class POController extends Controller
 
         $data = $request->all();
         foreach ($data as $key => $value) {
-            if (($key === 'hri') || ($key === 'qty_hri')){
+            if (($key === 'hri') || ($key === 'qty_hri') || ($key === 'penawaran')){
                 $data[$key] = (int)$value;
             }
         }
@@ -68,18 +73,6 @@ class POController extends Controller
         }
         try {
             \DB::beginTransaction();
-            // $data = [
-            //     'supplier' =>  $request->input('supplier'),
-            //     'id_supplier' => $request->input('id_supplier'),
-            //     'hri' => $request->input('hri'),
-            //     'qty_hri' => $request->input('qty_hri'),
-            //     'efisiensi' => $request->input('efisiensi'),
-            //     'ri_ked' => $request->input('ri_ked'),
-            //     'metode_pembayaran' => $request->input('metode_pembayaran'),
-            //     'tempo_pembayaran' => $request->input('tempo_pembayaran'),
-            //     'metode_penyerahan_barang' => $request->input('metode_penyerahan_barang'),
-            //     'lokasi_penyerahan_barang' => $request->input('lokasi_penyerahan_barang'),
-            // ];
 
             if ($request->hasFile('dokumen_kontrak')){
                 $dokumen_kontrak = $request->file('dokumen_kontrak');
@@ -91,6 +84,9 @@ class POController extends Controller
                 $dokumen_kontrak->move($path,$fileName);
                 $data['dokumen_kontrak'] = $fileName;
             }
+            $dsm = DSM::where('id',$request->input('supplier'))->first();
+            $data['id_dsm'] = $request->input('supplier');
+            $data['supplier'] = $dsm->supplier;
             PO::create($data);
 
             \DB::commit();
@@ -124,9 +120,10 @@ class POController extends Controller
     public function editPo($id)
     {
         $data['sppm'] = SPPM::get();
+        $data['dsm'] = DSM::get();
         $data['po'] = PO::where('id',$id)->first();
         $data['po']['ri_ked'] = Carbon::parse($data['po']['ri_ked'])->format('Y-m-d');
-        $data['po']['tempo_pembayaran'] = Carbon::parse($data['po']['tempo_pembayaran'])->format('Y-m-d');
+        $data['po']['tgl_penawaran'] = Carbon::parse($data['po']['tgl_penawaran'])->format('Y-m-d');
         $data['urlSubmit'] = route('update.po',$data['po']['id']);
         return view('po.edit-po',$data);
     }
@@ -150,12 +147,21 @@ class POController extends Controller
             }
             return back()->withInput()->withErrors($validator);
         }
+        if ($request->ajax()) {
+            return response()->json([
+                "status" => true,
+                "message" => "Data updated successfuly !",
+                "data" => null
+            ]);
+        }
         try {
             \DB::beginTransaction();
             $po = PO::where('id',$id)->first();
+            $dsm = DSM::where('id',$request->input('supplier'))->first();
+            $supplier = $dsm->supplier;
 
             $po->update([
-                'supplier' => $request->input('supplier'),
+                'supplier' => $supplier,
                 'id_supplier' => $request->input('id_supplier'),
                 'hri' => $request->input('hri'),
                 'qty_hri' => $request->input('qty_hri'),
@@ -165,6 +171,8 @@ class POController extends Controller
                 'tempo_pembayaran' => $request->input('tempo_pembayaran'),
                 'metode_penyerahan_barang' => $request->input('metode_penyerahan_barang'),
                 'lokasi_penyerahan_barang' => $request->input('lokasi_penyerahan_barang'),
+                'penawaran' => $request->input('penawaran'),
+                'tgl_penawaran' => $request->input('tgl_penawaran'),
             ]);
 
             if ($request->hasFile('dokumen_kontrak')){
@@ -209,7 +217,8 @@ class POController extends Controller
         }
     }
 
-    public function deletePo($id){
+    public function deletePo($id)
+    {
         try {
             $po = PO::findorfail($id);
             
@@ -284,6 +293,11 @@ class POController extends Controller
                             $link .= '<a href="'.$url.'">'.$data->dokumen_kontrak.'</a>';
                             return $link;
                         })
+                        ->addColumn('print',function($data){
+                            $route = route('get.print.po',$data->id);
+                            $print = '<a href="'.$route.'"><i class="fas fa-print"></i></a>';
+                            return $print;
+                        })
                         ->addColumn('action', function($data){
                             $user = Auth::user();
                             $user_roles = UserRole::where('user_id',$user->id)->with('role','user')->first();
@@ -302,8 +316,32 @@ class POController extends Controller
                             $button .= '</div>';
                             return $button;
                         })
-                        ->rawColumns(['no_po','tgl_po','hri','qty_hri','efisiensi','ri_ked','tempo_pembayaran','dokumen_kontrak','action'])
+                        ->rawColumns(['no_po','tgl_po','hri','qty_hri','efisiensi','ri_ked','tempo_pembayaran','dokumen_kontrak','print','action'])
                         ->addIndexColumn()
                         ->make(true);
+    }
+
+    public function getPrintPO($id)
+    {
+        $data['po'] = PO::where('id',$id)->with('sppm')->first();
+        $data['tgl_po'] = Carbon::parse($data['po']->created_at)->format('d-M-Y');
+        $data['tahun_po'] = Carbon::parse($data['po']->created_at)->format('Y');
+        $data['sppm'] = $data['po']->sppm;
+        $data['sppm']['hpp'] = number_format($data['sppm']->hpp);
+        $data['sppm']['qty_hpp'] = number_format($data['sppm']->qty_hpp);
+        $data['bulan_sppm'] = Carbon::parse($data['sppm']->created_at)->format('F');
+        $data['target_kedatangan'] = Carbon::parse($data['sppm']->target_kedatangan)->format('d-M-Y');
+        $data['dsm'] = $data['po']->dsm;
+        $jumlah = $data['po']->qty_hri;
+        $ppn = $jumlah * 11/100;
+        $data['total'] = number_format($jumlah + $ppn);
+        $data['jumlah'] = number_format($jumlah);
+        $data['ppn'] = number_format($ppn);
+        $data['ri_ked'] = Carbon::parse($data['po']->ri_ked)->format('d-M-Y');
+        $data['penawaran'] = number_format($data['po']->penawaran);
+        $data['tgl_penawaran'] = Carbon::parse($data['po']->tgl_penawaran)->format('d-M-Y');
+        
+        
+        return view('po.print-po',$data);
     }
 }

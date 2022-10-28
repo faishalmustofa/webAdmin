@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use DataTables;
 use Illuminate\Http\Request;
 use Validator;
+use Barryvdh\DomPDF\Facade as PDF;
 
 class SPPMController extends Controller
 {
@@ -78,11 +79,24 @@ class SPPMController extends Controller
             }
             
             $sppm = SPPM::create($data);
-
-            ProsesSPPM::create([
-                'id_sppm' => $sppm->id,
-                'status' => $sppm->status
-            ]);
+            
+            if ($sppm->status === '6'){
+                ProsesSPPM::create([
+                    'id_sppm' => $sppm->id,
+                    'tgl_proses_1' => Carbon::now(),
+                    'tgl_proses_2' => Carbon::now(),
+                    'tgl_proses_3' => Carbon::now(),
+                    'tgl_proses_4' => Carbon::now(),
+                    'tgl_proses_5' => Carbon::now(),
+                    'tgl_proses_6' => Carbon::now(),
+                    'status' => $sppm->status
+                ]);
+            } else {
+                ProsesSPPM::create([
+                    'id_sppm' => $sppm->id,
+                    'status' => $sppm->status
+                ]);
+            }
 
             \DB::commit();
             if ($request->ajax()) {
@@ -148,6 +162,13 @@ class SPPMController extends Controller
             }
             return back()->withInput()->withErrors($validator);
         }
+        // if ($request->ajax()) {
+        //     return response()->json([
+        //         "status" => true,
+        //         "message" => "Data updated successfuly !",
+        //         "data" => $request->all()
+        //     ]);
+        // }
         try {
             \DB::beginTransaction();
             $sppm = SPPM::where('id',$id)->first();
@@ -301,6 +322,10 @@ class SPPMController extends Controller
         $dives = (new SPPM);
 
         return DataTables::of($dives->get())
+                        ->addColumn('no_project',function($data){
+                            $no_project = $data->id;
+                            return $no_project;
+                        })                
                         ->addColumn('tgl_sppm',function($data){
                             $tgl_sppm = Carbon::parse($data->created_at)->format('d-m-Y');
                             return $tgl_sppm;
@@ -325,6 +350,11 @@ class SPPMController extends Controller
                             }
                             return $status;
                         })
+                        ->addColumn('print',function($data){
+                            $route = route('get.print.sppm',$data->id);
+                            $print = '<a href="'.$route.'"><i class="fas fa-print"></i></a>';
+                            return $print;
+                        })
                         ->addColumn('action', function($data){
                             // $show_url = route('dives.show',$data->divecenter_id);
                             $edit_url = route('edit.sppm',$data->id);
@@ -337,8 +367,16 @@ class SPPMController extends Controller
                             $button .= '</div>';
                             return $button;
                         })
-                        ->rawColumns(['tgl_sppm','target_kedatangan','file_teknis','status','action'])
+                        ->rawColumns(['no_project','tgl_sppm','target_kedatangan','file_teknis','status','print','action'])
                         ->addIndexColumn()
                         ->make(true);
+    }
+
+    public function getPrintSPPM($id)
+    {
+        $data['sppm'] = SPPM::where('id',$id)->first();
+        $data['target_kedatangan'] = Carbon::parse($data['sppm']->targer_kedatangan)->format('d-M-Y');
+        // dd($target_kedatangan);
+        return view('sppm.print-sppm',$data);
     }
 }

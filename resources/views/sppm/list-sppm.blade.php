@@ -37,6 +37,7 @@
                             <th>Target Kedatangan</th>
                             <th>File Teknis</th>
                             <th>Status PO</th>
+                            <th>Print</th>
                             <th>Action</th>
                         </tr>
                     </thead>

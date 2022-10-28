@@ -44,7 +44,6 @@
                 order : ['0','asc'],
                 dom: 'Blfrtip',
                 responsive: false,
-                buttons: ['csv', 'excel', 'pdf', 'print'],
             });
         });
         
