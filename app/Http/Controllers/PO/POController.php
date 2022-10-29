@@ -247,7 +247,7 @@ class POController extends Controller
                         })                
                         ->addColumn('no_project', function($data){
                             $sppm = $data->sppm;
-                            $no_project = $sppm->no_project;
+                            $no_project = $sppm->id;
                             return $no_project;
                         })
                         ->addColumn('no_sppm', function($data){
@@ -283,10 +283,6 @@ class POController extends Controller
                             $ri_ked = Carbon::parse($data->ri_ked)->format('d-m-Y');
                             return $ri_ked;
                         })
-                        ->addColumn('tempo_pembayaran', function($data){
-                            $tempo_pembayaran = Carbon::parse($data->tempo_pembayaran)->format('d-m-Y');
-                            return $tempo_pembayaran;
-                        })
                         ->addColumn('dokumen_kontrak', function($data){
                             $url = asset('assets/po/'.$data->dokumen_kontrak);
                             $link = '';
@@ -316,7 +312,7 @@ class POController extends Controller
                             $button .= '</div>';
                             return $button;
                         })
-                        ->rawColumns(['no_po','tgl_po','hri','qty_hri','efisiensi','ri_ked','tempo_pembayaran','dokumen_kontrak','print','action'])
+                        ->rawColumns(['no_po','tgl_po','hri','qty_hri','efisiensi','ri_ked','dokumen_kontrak','print','action'])
                         ->addIndexColumn()
                         ->make(true);
     }

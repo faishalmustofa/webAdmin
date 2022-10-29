@@ -47,6 +47,7 @@
                 success: function (res) {
                     console.log(res);
                     let dataGrafik = Object.keys(res.data_po);
+                    console.log(dataGrafik);
 
                     const labels = [
                         '',
@@ -66,9 +67,11 @@
 
                     data = new Array(12);
                     for (let index = 1; index <= dataGrafik.length; index++) {
-                        if (res.data_po[index].length != 0){
+                        if ((typeof res.data_po[index]) === 'Array'){
                             let sum = res.data_po[index].reduce((a, b) => a + b, 0)
                             data[index] = sum;
+                        } else if( ( (typeof res.data_po[index]) === 'object') && (res.data_po[index] != 0) ){
+                            data[index] = res.data_po[index];
                         } else {
                             data[index] = 0;
                         }
