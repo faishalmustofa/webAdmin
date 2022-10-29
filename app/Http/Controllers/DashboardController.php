@@ -25,6 +25,10 @@ class DashboardController extends Controller
         $dives = $dives->where('status','<>', 6);
 
         return DataTables::of($dives->get())
+                        ->addColumn('no_project',function($data){
+                            $no_project = $data->id;
+                            return $no_project;
+                        })                 
                         ->addColumn('tgl_sppm',function($data){
                             $tgl_sppm = Carbon::parse($data->created_at)->format('d-m-Y');
                             return $tgl_sppm;
@@ -71,6 +75,10 @@ class DashboardController extends Controller
         $dives = (new SPPM);
         $dives = $dives->where('status','=', 6);
         return DataTables::of($dives->get())
+                        ->addColumn('no_project',function($data){
+                            $no_project = $data->id;
+                            return $no_project;
+                        })                  
                         ->addColumn('tgl_sppm',function($data){
                             $tgl_sppm = Carbon::parse($data->created_at)->format('d-m-Y');
                             return $tgl_sppm;
@@ -107,12 +115,13 @@ class DashboardController extends Controller
                             $button .= '</div>';
                             return $button;
                         })
-                        ->rawColumns(['tgl_sppm','target_kedatangan','file_teknis','status','action'])
+                        ->rawColumns(['no_project','tgl_sppm','target_kedatangan','file_teknis','status','action'])
                         ->addIndexColumn()
                         ->make(true);
     }
 
-    public function grafik(){
+    public function grafik()
+    {
         $pos = PO::with('sppm')->get();
         $data['sppm'] = SPPM::where('status','=',6)->get();
         $data['urlSubmit'] = route('filter.grafik');
@@ -122,27 +131,25 @@ class DashboardController extends Controller
     public function getGrafik(Request $request)
     {
         $labels = [
-            'January',
-            'February',
-            'March',
-            'April',
-            'May',
-            'June',
-            'July',
-            'August',
-            'September',
-            'October',
-            'November',
-            'December',
+            '1',
+            '2',
+            '3',
+            '4',
+            '5',
+            '6',
+            '7',
+            '8',
+            '9',
+            '10',
+            '11',
+            '12',
         ];
-        // $pos = PO::select('qty_hri','created_at')->with('sppm')->get();
 
         $thisYear = Carbon::now()->format('Y');
         $data = array();
         foreach ($labels as $key => $value) {
-            $month = Carbon::parse($value)->format('m');
-            $data[(int)$month] = PO::whereYear('created_at','=',$thisYear)
-                                ->whereMonth('created_at','=',(int)$month)
+            $data[$value] = PO::whereYear('created_at','=',$thisYear)
+                                ->whereMonth('created_at','=',$value)
                                 ->with('sppm')->pluck('qty_hri');
         }
 
@@ -157,28 +164,28 @@ class DashboardController extends Controller
     public function filterGrafik(Request $request)
     {
         $labels = [
-            'January',
-            'February',
-            'March',
-            'April',
-            'May',
-            'June',
-            'July',
-            'August',
-            'September',
-            'October',
-            'November',
-            'December',
+            '1',
+            '2',
+            '3',
+            '4',
+            '5',
+            '6',
+            '7',
+            '8',
+            '9',
+            '10',
+            '11',
+            '12',
         ];
 
         $thisYear = Carbon::now()->format('Y');
         $data = array();
         foreach ($labels as $key => $value) {
-            $month = Carbon::parse($value)->format('m');
-            $data[(int)$month] = PO::join('sppms','sppms.id','=','pos.id_sppm')
+            // $month = Carbon::parse($value)->format('m');
+            $data[$value] = PO::join('sppms','sppms.id','=','pos.id_sppm')
                                 ->where('sppms.kode_material','=',$request->input('filter'))
                                 ->whereYear('pos.created_at','=',$thisYear)
-                                ->whereMonth('pos.created_at','=',(int)$month)
+                                ->whereMonth('pos.created_at','=',$value)
                                 ->pluck('pos.qty_hri');
         }
 

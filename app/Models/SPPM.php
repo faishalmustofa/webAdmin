@@ -49,7 +49,7 @@ class SPPM extends Model
             'hpp' => 'required',
             'qty_hpp' => 'required',
             'target_kedatangan' => 'required',
-            'file_teknis' => 'required|mimes:pdf',
+            // 'file_teknis' => 'required|mimes:pdf',
             'status' => 'required',
             'keterangan' => 'required',
         ]
@@ -70,7 +70,7 @@ class SPPM extends Model
             'hpp' =>'HPP field is Required',
             'qty_hpp' =>'Qty HPP field is Required',
             'target_kedatangan' =>'Target Kedatangan field is Required',
-            'file_teknis' =>'File Teknis field is Required',
+            // 'file_teknis' =>'File Teknis field is Required',
             'status' =>'Status field is Required',
             'keterangan' => 'Keterangan field is Required',
         ]

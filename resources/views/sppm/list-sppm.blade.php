@@ -23,7 +23,6 @@
                             <th>No</th>
                             <th>Nama Pembuat</th>
                             <th>Nama Project</th>
-                            <th>No. Project</th>
                             <th>No. SPPM</th>
                             <th>Tanggal SPPM</th>
                             <th>No. SPK</th>
