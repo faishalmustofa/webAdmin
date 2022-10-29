@@ -10,9 +10,6 @@
                     url     : '{!! URL::route("datatable.po") !!}',
                     type    : 'GET',
                     dataType: 'json',
-                    success: function(res){
-                        console.log(res);
-                    }
                 },
                 columns: [
                     {data: 'DT_RowIndex', name: 'DT_RowIndex' , orderable: false, searchable: false},
