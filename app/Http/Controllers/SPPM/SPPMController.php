@@ -330,6 +330,13 @@ class SPPMController extends Controller
                             $tgl_sppm = Carbon::parse($data->created_at)->format('d-m-Y');
                             return $tgl_sppm;
                         })
+                        ->addColumn('no_spk',function($data){
+                            $no_spk = $data->no_spk;
+                            if ($no_spk === '0'){
+                                $no_spk = '-';
+                            }
+                            return $no_spk;
+                        })
                         ->addColumn('target_kedatangan',function($data){
                             $target_kedatangan = Carbon::parse($data->target_kedatangan)->format('d-m-Y');
                             return $target_kedatangan;
@@ -367,7 +374,7 @@ class SPPMController extends Controller
                             $button .= '</div>';
                             return $button;
                         })
-                        ->rawColumns(['no_project','tgl_sppm','target_kedatangan','file_teknis','status','print','action'])
+                        ->rawColumns(['no_project','tgl_sppm','no_spk','target_kedatangan','file_teknis','status','print','action'])
                         ->addIndexColumn()
                         ->make(true);
     }

@@ -45,9 +45,9 @@
                 processData: false,
                 contentType: false,
                 success: function (res) {
-                    console.log(res);
+                    console.log(res.data_po);
                     let dataGrafik = Object.keys(res.data_po);
-                    console.log(dataGrafik);
+                    // console.log(dataGrafik);
 
                     const labels = [
                         '',
@@ -67,7 +67,7 @@
 
                     data = new Array(12);
                     for (let index = 1; index <= dataGrafik.length; index++) {
-                        if ((typeof res.data_po[index]) === 'Array'){
+                        if ((typeof res.data_po[index]) === 'object'){
                             let sum = res.data_po[index].reduce((a, b) => a + b, 0)
                             data[index] = sum;
                         } else if( ( (typeof res.data_po[index]) === 'object') && (res.data_po[index] != 0) ){

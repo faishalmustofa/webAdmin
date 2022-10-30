@@ -322,21 +322,22 @@ class POController extends Controller
         $data['po'] = PO::where('id',$id)->with('sppm')->first();
         $data['tgl_po'] = Carbon::parse($data['po']->created_at)->format('d-M-Y');
         $data['tahun_po'] = Carbon::parse($data['po']->created_at)->format('Y');
-        $data['sppm'] = $data['po']->sppm;
-        $data['sppm']['hpp'] = number_format($data['sppm']->hpp);
-        $data['sppm']['qty_hpp'] = number_format($data['sppm']->qty_hpp);
-        $data['bulan_sppm'] = Carbon::parse($data['sppm']->created_at)->format('F');
-        $data['target_kedatangan'] = Carbon::parse($data['sppm']->target_kedatangan)->format('d-M-Y');
-        $data['dsm'] = $data['po']->dsm;
+        $data['ri_ked'] = Carbon::parse($data['po']->ri_ked)->format('d-M-Y');
+        $data['penawaran'] = number_format($data['po']->penawaran);
+        $data['tgl_penawaran'] = Carbon::parse($data['po']->tgl_penawaran)->format('d-M-Y');
         $jumlah = $data['po']->qty_hri;
         $ppn = $jumlah * 11/100;
         $data['total'] = number_format($jumlah + $ppn);
         $data['jumlah'] = number_format($jumlah);
         $data['ppn'] = number_format($ppn);
-        $data['ri_ked'] = Carbon::parse($data['po']->ri_ked)->format('d-M-Y');
-        $data['penawaran'] = number_format($data['po']->penawaran);
-        $data['tgl_penawaran'] = Carbon::parse($data['po']->tgl_penawaran)->format('d-M-Y');
+
+        $data['sppm'] = $data['po']->sppm;
+        $data['sppm']['hpp'] = number_format($data['sppm']->hpp);
+        $data['sppm']['qty_hpp'] = number_format($data['sppm']->qty_hpp);
+        $data['bulan_sppm'] = Carbon::parse($data['sppm']->created_at)->format('F');
+        $data['target_kedatangan'] = Carbon::parse($data['sppm']->target_kedatangan)->format('d-M-Y');
         
+        $data['dsm'] = $data['po']->dsm;
         
         return view('po.print-po',$data);
     }

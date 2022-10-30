@@ -122,8 +122,13 @@ class DashboardController extends Controller
 
     public function grafik()
     {
-        $pos = PO::with('sppm')->get();
-        $data['sppm'] = SPPM::where('status','=',6)->get();
+        $pos = (new PO)->with('sppm');
+        $pos = $pos->get();
+        $data['sppm'] = array();
+        foreach ($pos as $key => $value) {
+            # code...
+            array_push($data['sppm'],$value->sppm);
+        }
         $data['urlSubmit'] = route('filter.grafik');
         return view('dashboard.grafik',$data);
     }
