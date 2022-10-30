@@ -33,6 +33,14 @@ Route::get('/login', 'AuthController@login')->name('login');
 Route::post('/post-login', 'AuthController@postLogin')->name('post-login');
 Route::post('/logout', 'AuthController@logout')->name('logout');
 
+//User
+Route::get('/user-list', 'UserController@userList')->name('users');
+Route::get('/edit-user/{id}', 'UserController@editUser')->name('edit.user');
+Route::post('/update-user/{id}', 'UserController@updateUser')->name('update.user');
+Route::get('/delete-user/{id}', 'UserController@deleteUser')->name('delete.user');
+Route::get('/datatable-users','UserController@datatableUsers')->name('datatable.users');
+Route::get('/verify-users/{id}','UserController@verifyUser')->name('verify.users');
+
 // Menu
 // DSM
 Route::namespace("DSM")->group(function (){

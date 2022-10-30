@@ -14,6 +14,7 @@ use DataTables;
 use Illuminate\Http\Request;
 use Validator;
 use Barryvdh\DomPDF\Facade as PDF;
+use Hash;
 
 class SPPMController extends Controller
 {
@@ -134,6 +135,7 @@ class SPPMController extends Controller
         $data['sppm']['target_kedatangan'] = Carbon::parse($data['sppm']['target_kedatangan'])->format('Y-m-d');
         $data['urlSubmit'] = route('update.sppm',$data['sppm']['id']);
         $data['admin'] = User::where('id',$data['sppm']['id_pembuat'])->first();
+
         return view('sppm.edit-sppm',$data);
     }
 
@@ -363,14 +365,21 @@ class SPPMController extends Controller
                             return $print;
                         })
                         ->addColumn('action', function($data){
+                            $user = Auth::user();
+                            $user_roles = UserRole::where('user_id',$user->id)->with('role','user')->first();
+                            $admin_role = $user_roles->role;
+
                             // $show_url = route('dives.show',$data->divecenter_id);
                             $edit_url = route('edit.sppm',$data->id);
                             $delete_url = route('delete.sppm',$data->id);
                             $button = '';
                             $button .= '<div class="btn-group" role="group">';
-                            // $button .= '<a class="btn" href="'.$show_url.'"><i class="fa fa-search text-info"></i></a>';
                             $button .= '<a class="btn" href="'.$edit_url.'"><i class="fa fa-edit text-warning"></i></a>';
-                            $button .= '<a class="btn" onclick="return confirm(\'Are you sure?\')"  href="'.$delete_url.'"><i class="fa fa-trash text-danger"></i></a>';
+                            if ( ($admin_role->slug === 'pengadaan') || ($admin_role->slug === 'super-admin') ){
+                                // $button .= '<a class="btn" href="'.$show_url.'"><i class="fa fa-search text-info"></i></a>';
+                                // $button .= '<a class="btn" href="'.$edit_url.'"><i class="fa fa-edit text-warning"></i></a>';
+                                $button .= '<a class="btn" onclick="return confirm(\'Are you sure?\')"  href="'.$delete_url.'"><i class="fa fa-trash text-danger"></i></a>';
+                            }
                             $button .= '</div>';
                             return $button;
                         })

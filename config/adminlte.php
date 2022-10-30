@@ -399,6 +399,7 @@ return [
         //     'icon'        => 'fas fa-fw fa-clipboard-list',
         // ],
         [
+            'key'         => 'grafik',
             'text'        => 'Grafik',
             'url'         => '/grafik',
             'icon'        => 'fas fa-fw fa-chart-bar',

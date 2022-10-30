@@ -84,9 +84,12 @@
                         request.append(value.name, value.value);
                     }
                 });
+                // console.log($('#supplier').val());
 
                 let dokumen_kontrak = $('#dokumen_kontrak')[0].files;
                 request.append('dokumen_kontrak', (dokumen_kontrak.length > 0 ? dokumen_kontrak[0] : ''));
+                let id_supplier = $('#id_supplier').val();
+                request.append('id_supplier', id_supplier);
 
                 $.ajax({
                     type: "POST",
