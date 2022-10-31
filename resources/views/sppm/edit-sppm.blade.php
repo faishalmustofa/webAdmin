@@ -31,6 +31,7 @@
                                         class="form-control" 
                                         value="{{ (old('nama_pembuat') ? old('nama_pembuat') : (($sppm->nama_pembuat === '') ? '' : $sppm->nama_pembuat)) }}"
                                         id="nama_pembuat"
+                                        {{ $admin_role->slug === 'produksi' ? 'disabled' : '' }}
                                     >
                                 </div>
                                 @if ($errors->has('nama_pembuat'))
@@ -53,6 +54,7 @@
                                         placeholder="Enter Nama Project..."
                                         value="{{ (old('nama_project') ? old('nama_project') : (($sppm->nama_project === '') ? '' : $sppm->nama_project)) }}"
                                         id="nama_project"
+                                        {{ $admin_role->slug === 'produksi' ? 'disabled' : '' }}
                                     >
                                 </div>
                                 @if ($errors->has('nama_project'))
@@ -97,6 +99,7 @@
                                         placeholder="Enter No. SPPM..."
                                         value="{{ (old('no_sppm') ? old('no_sppm') : (($sppm->no_sppm === '') ? '' : $sppm->no_sppm)) }}"
                                         id="no_sppm"
+                                        {{ $admin_role->slug === 'produksi' ? 'disabled' : '' }}
                                     >
                                 </div>
                                 @if ($errors->has('no_sppm'))
@@ -141,6 +144,7 @@
                                         placeholder="No. SPK..."
                                         value="{{ (old('no_spk') ? old('no_spk') : (($sppm->no_spk === '') ? '' : $sppm->no_spk)) }}"
                                         id="no_spk"
+                                        {{ $admin_role->slug === 'produksi' ? 'disabled' : '' }}
                                     >
                                 </div>
                                 @if ($errors->has('no_spk'))
@@ -163,6 +167,7 @@
                                         placeholder="Enter Uraian..."
                                         value="{{ (old('uraian') ? old('uraian') : (($sppm->uraian === '') ? '' : $sppm->uraian)) }}"
                                         id="uraian"
+                                        {{ $admin_role->slug === 'produksi' ? 'disabled' : '' }}
                                     >
                                 </div>
                                 @if ($errors->has('uraian'))
@@ -185,6 +190,7 @@
                                         placeholder="Enter Kode Material..."
                                         value="{{ (old('kode_material') ? old('kode_material') : (($sppm->kode_material === '') ? '' : $sppm->kode_material)) }}"
                                         id="kode_material"
+                                        {{ $admin_role->slug === 'produksi' ? 'disabled' : '' }}
                                     >
                                 </div>
                                 @if ($errors->has('kode_material'))
@@ -207,6 +213,7 @@
                                         placeholder="Enter Spesifikasi..."
                                         value="{{ (old('spesifikasi') ? old('spesifikasi') : (($sppm->spesifikasi === '') ? '' : $sppm->spesifikasi)) }}"
                                         id="spesifikasi"
+                                        {{ $admin_role->slug === 'produksi' ? 'disabled' : '' }}
                                     >
                                 </div>
                                 @if ($errors->has('spesifikasi'))
@@ -229,6 +236,7 @@
                                         placeholder="Enter Satuan..."
                                         value="{{ (old('satuan') ? old('satuan') : (($sppm->satuan === '') ? '' : $sppm->satuan)) }}"
                                         id="satuan"
+                                        {{ $admin_role->slug === 'produksi' ? 'disabled' : '' }}
                                     >
                                 </div>
                                 @if ($errors->has('satuan'))
@@ -251,6 +259,7 @@
                                         placeholder="Enter Qty SPPM..."
                                         value="{{ (old('qty_sppm') ? old('qty_sppm') : (($sppm->qty_sppm === '') ? '' : $sppm->qty_sppm)) }}"
                                         id="qty_sppm"
+                                        {{ $admin_role->slug === 'produksi' ? 'disabled' : '' }}
                                     >
                                 </div>
                                 @if ($errors->has('qty_sppm'))
@@ -273,6 +282,7 @@
                                         placeholder="Enter HPP..."
                                         value="{{ (old('hpp') ? old('hpp') : (($sppm->hpp === '') ? '' : $sppm->hpp)) }}"
                                         id="hpp"
+                                        {{ $admin_role->slug === 'produksi' ? 'disabled' : '' }}
                                     >
                                 </div>
                                 @if ($errors->has('hpp'))
@@ -295,6 +305,7 @@
                                         placeholder="Enter Qty HPP..."
                                         value="{{ (old('qty_hpp') ? old('qty_hpp') : (($sppm->qty_hpp === '') ? '' : $sppm->qty_hpp)) }}"
                                         id="qty_hpp"
+                                        {{ $admin_role->slug === 'produksi' ? 'disabled' : '' }}
                                     >
                                 </div>
                                 @if ($errors->has('qty_hpp'))
@@ -317,7 +328,8 @@
                                         placeholder="dd-mm-yyyy"
                                         value="{{ (old('target_kedatangan') ? old('target_kedatangan') : (($sppm->target_kedatangan === '') ? '' : $sppm->target_kedatangan)) }}"
                                         id="target_kedatangan"
-                                        style="width:35%">
+                                        style="width:35%"
+                                        {{ $admin_role->slug === 'produksi' ? 'disabled' : '' }}>
                                 </div>
                                 @if ($errors->has('target_kedatangan'))
                                     <div class="invalid-feedback">
@@ -361,19 +373,11 @@
                                     <label for="status">Status</label>
                                 </div>
                                 <div class="col-md-10">
-                                    @if ($admin_role->slug === 'pengadaan')
-                                        <select class="custom-select" name="status" id="status" style="width:35%">
-                                            <option class="text-center" value=""> -- Select Status -- </option>
-                                            <option class="text-center" value="0" {{ (old('status') ? old('status') : (($sppm->status === 0) ? 'selected' : '')) }}>Diproses</option>
-                                            <option class="text-center" value="6" {{ (old('status') ? old('status') : (($sppm->status === 6) ? 'selected' : '')) }}>DONE</option>
-                                        </select>
-                                    @else
-                                        <select class="custom-select" name="status" id="status" style="width:35%" disabled>
-                                            <option class="text-center" value=""> -- Select Status -- </option>
-                                            <option class="text-center" value="0" {{ (old('status') ? old('status') : (($sppm->status === 0) ? 'selected' : '')) }}>Diproses</option>
-                                            <option class="text-center" value="6" {{ (old('status') ? old('status') : (($sppm->status === 6) ? 'selected' : '')) }}>DONE</option>
-                                        </select>
-                                    @endif
+                                    <select class="custom-select" name="status" id="status" style="width:35%" {{ $admin_role->slug === 'produksi' ? 'disabled' : '' }}>
+                                        <option class="text-center" value=""> -- Select Status -- </option>
+                                        <option class="text-center" value="0" {{ (old('status') ? old('status') : (($sppm->status === 0) ? 'selected' : '')) }}>Diproses</option>
+                                        <option class="text-center" value="6" {{ (old('status') ? old('status') : (($sppm->status === 6) ? 'selected' : '')) }}>DONE</option>
+                                    </select>
                                     
                                 </div>
                                 @if ($errors->has('status'))
@@ -389,7 +393,7 @@
                                     <label for="keterangan">Keterangan</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <textarea type="text" name="keterangan" class="form-control" placeholder="Enter Keterangan..." value="{{ (old('keterangan') ? old('keterangan') : (is_null($sppm->keterangan) ? '' : $sppm->keterangan)) }}" id="keterangan">{{ (old('keterangan') ? old('keterangan') : (is_null($sppm->keterangan) ? '' : $sppm->keterangan)) }}</textarea>
+                                    <textarea type="text" name="keterangan" class="form-control" placeholder="Enter Keterangan..." value="{{ (old('keterangan') ? old('keterangan') : (is_null($sppm->keterangan) ? '' : $sppm->keterangan)) }}" id="keterangan" {{ $admin_role->slug === 'produksi' ? 'disabled' : '' }}>{{ (old('keterangan') ? old('keterangan') : (is_null($sppm->keterangan) ? '' : $sppm->keterangan)) }}</textarea>
                                 </div>
                                 @if ($errors->has('keterangan'))
                                     <div class="invalid-feedback">

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Role;
 use App\UserRole;
+use DataTables;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -43,6 +44,7 @@ class AuthController extends Controller
                 'name' => $request->input('name'),
                 'email' => $request->input('email'),
                 'password' => Hash::make($request->input('password')),
+                'status' => 0
             ]);
 
             UserRole::create([
@@ -82,6 +84,11 @@ class AuthController extends Controller
                 flash()->error('Invalid Email Or Password!');
                 return $backToLogin;
             }
+            if($user->status === 0){
+                flash()->error('Invalid Email Or Password!');
+                toastr()->error('Email Anda belum diverifikasi oleh admin');
+                return $backToLogin;
+            }
             $redirectAfterLogin = redirect()->route('dashboard');
 
             flash()->success('Login success!');
@@ -97,4 +104,6 @@ class AuthController extends Controller
         Auth::logout();
         return redirect()->route('login');
     }
+
+    
 }

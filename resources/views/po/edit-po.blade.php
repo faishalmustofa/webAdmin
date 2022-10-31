@@ -93,6 +93,7 @@
                                         placeholder="Enter ID Pemasok..."
                                         value="{{ (old('id_supplier') ? old('id_supplier') : (($po->id_supplier === '') ? '' : $po->id_supplier)) }}"
                                         id="id_supplier"
+                                        disabled
                                         >
                                 </div>
                                 @if ($errors->has('id_supplier'))
@@ -316,7 +317,7 @@
                                         name="tgl_penawaran" 
                                         class="form-control" 
                                         placeholder="dd-mm-yyyy"
-                                        
+                                        value="{{ (old('tgl_penawaran') ? old('tgl_penawaran') : (($po->tgl_penawaran === '') ? '' : $po->tgl_penawaran)) }}"
                                         id="tgl_penawaran"
                                         style="width:35%">
                                 </div>

@@ -21,6 +21,10 @@ class DSMController extends Controller
 
     public function getDsm()
     {
+        // $user = Auth::user();
+        // $user_roles = UserRole::where('user_id',$user->id)->with('role','user')->first();
+        // $admin_role = $user_roles->role;
+        // dd($admin_role);
         return view('dsm.list-dsm');
     }
 
@@ -237,7 +241,7 @@ class DSMController extends Controller
                             $delete_url = route('delete.dsm',$data->id);
                             $button = '';
                             $button .= '<div class="btn-group" role="group">';
-                            if ($admin_role->slug === 'pengadaan'){
+                            if ( ($admin_role->slug === 'pengadaan') || ($admin_role->slug === 'super-admin') ){
                                 // $button .= '<a class="btn" href="'.$show_url.'"><i class="fa fa-search text-info"></i></a>';
                                 $button .= '<a class="btn" href="'.$edit_url.'"><i class="fa fa-edit text-warning"></i></a>';
                                 $button .= '<a class="btn" onclick="return confirm(\'Are you sure?\')"  href="'.$delete_url.'"><i class="fa fa-trash text-danger"></i></a>';
