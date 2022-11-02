@@ -17,12 +17,23 @@
                     Filter by :
                     <form action="{{ route('filter.grafik') }}" id="filterGrafik" method="POST" enctype="multipart/form-data">
                         @csrf
-                        <select class="custom-select text-center" name="filter" id="filter" style="border:solid 1px">
-                            <option value="">-- Select Filter --</option>
-                            @foreach ($sppm as $item)
-                                <option value="{{ $item->kode_material }}" >{{ $item->uraian }}</option>
-                            @endforeach
-                        </select>
+                        <div class="row">
+                            <div class="col">
+                                <select class="custom-select text-center" name="filter" id="filter" style="border:solid 1px">
+                                    <option value="">-- Select Material --</option>
+                                    @foreach ($sppm as $item)
+                                        <option value="{{ $item->kode_material }}" >{{ $item->uraian }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col">
+                                <input type="text" name="year" id="datepicker" class="form-control" placeholder="Select Year" style="border:solid 1px">
+                                {{-- <input type="year" class="form-control"> --}}
+                            </div>
+                            <div class="col">
+                                <a type="button" class="btn btn-success" id="apply-filter">Apply</a>
+                            </div>
+                        </div>
                     </form>
                     <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus" style="display: none;"></i></button>
                 </div>

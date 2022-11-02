@@ -183,21 +183,45 @@ class DashboardController extends Controller
             '12',
         ];
 
-        $thisYear = Carbon::now()->format('Y');
+        if ($request->has('year')){
+            $thisYear = $request->input('year');
+        } else {
+            $thisYear = Carbon::now()->format('Y');
+        }  
+        // if ($request->ajax()) {
+        //     return response()->json([
+        //         "status" => true,
+        //         "data_po" => $request->has('year') && is_null($request->input('filter')),
+        //     ]);
+        // }
+        
         $data = array();
         foreach ($labels as $key => $value) {
             // $month = Carbon::parse($value)->format('m');
-            $data[$value] = PO::join('sppms','sppms.id','=','pos.id_sppm')
-                                ->where('sppms.kode_material','=',$request->input('filter'))
-                                ->whereYear('pos.created_at','=',$thisYear)
-                                ->whereMonth('pos.created_at','=',$value)
-                                ->pluck('pos.qty_hri');
+            // $data[$value] = PO::join('sppms','sppms.id','=','pos.id_sppm')
+            //                     ->where('sppms.kode_material','=',$request->input('filter'))
+            //                     ->whereYear('pos.created_at','=',$thisYear)
+            //                     ->whereMonth('pos.created_at','=',$value)
+            //                     ->pluck('pos.qty_hri');
+
+            $po = PO::join('sppms','sppms.id','=','pos.id_sppm');
+            if (!is_null($request->input('filter')) ) {
+                $po = $po->where('sppms.kode_material','=',$request->input('filter'))
+                         ->whereYear('pos.created_at','=',$thisYear)
+                         ->whereMonth('pos.created_at','=',$value)
+                         ->pluck('pos.qty_hri');
+            } else {
+                $po = $po->whereYear('pos.created_at','=',$thisYear)
+                         ->whereMonth('pos.created_at','=',$value)
+                         ->pluck('pos.qty_hri');
+            }
+            $data[$value] = $po;
         }
 
         if ($request->ajax()) {
             return response()->json([
                 "status" => true,
-                "data" => $data,
+                "data_po" => $data,
             ]);
         }  
     }

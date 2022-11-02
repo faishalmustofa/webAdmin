@@ -81,6 +81,7 @@ class AuthController extends Controller
             $remember = ($request->has('remember') && $request->remember == "on" ? true : false);
 
             if(!Auth::attempt($credentials,$remember)){
+                toastr()->error('Invalid Email Or Password!');
                 flash()->error('Invalid Email Or Password!');
                 return $backToLogin;
             }
@@ -91,6 +92,7 @@ class AuthController extends Controller
             }
             $redirectAfterLogin = redirect()->route('dashboard');
 
+            toastr()->success('Login success!');
             flash()->success('Login success!');
             return $redirectAfterLogin;
         } else {

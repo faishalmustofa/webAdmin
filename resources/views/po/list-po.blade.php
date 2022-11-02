@@ -36,6 +36,7 @@
             <!-- /.card-header -->
             <div class="card-body table-responsive">
                 @include('flash::message')
+                
                 <table id="diproses" class="table responsive striped hoverable">
                     <thead>
                         <tr>

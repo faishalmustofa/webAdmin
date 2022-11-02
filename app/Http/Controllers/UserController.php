@@ -7,10 +7,80 @@ use App\User;
 use App\UserRole;
 use Auth;
 use DataTables;
+use Hash;
 use Illuminate\Http\Request;
+use Validator;
 
 class UserController extends Controller
 {
+    public function __construct(User $model)
+    {
+        $this->model = $model;
+    }
+
+    public function profile($id)
+    {
+        $data['user'] = User::where('id',$id)->first();
+        $data['urlSubmit'] = route('update.profile',$data['user']->id);
+        $data['url_profile'] = route('profile',$data['user']->id);
+        return view('user.profile',$data);
+    }
+
+    public function updateProfile(Request $request,$id)
+    {
+        $rules = $this->model->rules['update-profile'];
+        $messages = $this->model->messages['update-profile'];
+        $validator = Validator::make($request->all(), $rules, $messages);
+        if($validator->fails()){
+            if ($request->ajax()) {
+                return response()->json([
+                    'messages' => $validator->messages(),
+                    'status' => false
+                ], 200);
+            }
+            return back()->withInput()->withErrors($validator);
+        }
+
+        try {
+            \DB::beginTransaction();
+
+            $user = User::where('id',$id)->first();
+            $user->update([
+                'name' => $request->input('name'),
+                'email' => $request->input('email'),
+                'password' => Hash::make($request->input('password')),
+            ]);
+
+            \DB::commit();
+
+            if ($request->ajax()) {
+                return response()->json([
+                    "status" => true,
+                    "message" => "Profile successfuly updated !",
+                    "data" => null
+                ]);
+            }
+
+            flash()->success('Profile updated successfuly');
+            toastr()->success('Profile successfully updated!');
+            return redirect()->route('profile');
+        } catch (\Exception $e) {
+            \Log::error($e);
+            \DB::rollback();
+            if (request()->ajax()) {
+                return response()->json([
+                    "success" => false,
+                    "message" => $e->getMessage(),
+                    // "message" => "Something went wrong. Failed to submit data.",
+                    "data" => null
+                ]);
+            }
+
+            flash()->error('Something went wrong. Failed to submit data.');
+            return redirect()->route('edit.sppm',$id);
+        }
+    }
+
     public function userList()
     {
         $data['users'] = User::where('name','<>','super-admin')->get();
@@ -25,6 +95,67 @@ class UserController extends Controller
         $data['user_roles'] = $user_roles->role;
         $data['urlSubmit'] = route('update.user',$data['user']->id);
         return view('user.user-edit',$data);
+    }
+
+    public function updateUser(Request $request,$id)
+    {
+        try {
+            \DB::beginTransaction();
+            $user = User::where('id',$id)->first();
+            $user_role = UserRole::where('user_id',$user->id);
+            $user->update([
+                'name' => $request->input('nama'),
+            ]);
+            $user_role->update([
+                'role_id' => $request->input('role')
+            ]);
+
+            \DB::commit();
+
+            if ($request->ajax()) {
+                return response()->json([
+                    "status" => true,
+                    "message" => "Data updated successfuly !",
+                    "data" => null
+                ]);
+            }
+
+            flash()->success('User updated successfuly');
+            toastr()->success('User successfully updated!');
+            return redirect()->route('users');
+        } catch (\Exception $e) {
+            \Log::error($e);
+            \DB::rollback();
+            if (request()->ajax()) {
+                return response()->json([
+                    "success" => false,
+                    "message" => $e->getMessage(),
+                    // "message" => "Something went wrong. Failed to submit data.",
+                    "data" => null
+                ]);
+            }
+
+            flash()->error('Something went wrong. Failed to submit data.');
+            return redirect()->route('edit.sppm',$id);
+        }
+    }
+
+    public function deleteUser($id)
+    {
+        try {
+            $user = User::findorfail($id);
+            $user_role = UserRole::where('user_id',$user->id);
+
+            $user->delete();
+            $user_role->delete();
+            toastr()->success('User successfully deleted!');
+            flash()->success('User successfully deleted!');
+            return redirect()->route('users');
+        } catch (\Exception $e) {
+            \Log::error($e);
+            flash()->error('Data failed to delete');
+            return redirect()->back();
+        }
     }
 
     public function verifyUser($id)

@@ -57,10 +57,11 @@ class POController extends Controller
         $data = $request->all();
         foreach ($data as $key => $value) {
             if (($key === 'hri') || ($key === 'qty_hri') || ($key === 'penawaran')){
-                $data[$key] = (int)$value;
+                if (!is_null($value)){
+                    $data[$key] = (int)$value;
+                }
             }
         }
-        
         $validator = Validator::make($data, $rules, $messages);
         if($validator->fails()){
             if ($request->ajax()) {
@@ -147,13 +148,7 @@ class POController extends Controller
             }
             return back()->withInput()->withErrors($validator);
         }
-        if ($request->ajax()) {
-            return response()->json([
-                "status" => true,
-                "message" => "Data updated successfuly !",
-                "data" => null
-            ]);
-        }
+
         try {
             \DB::beginTransaction();
             $po = PO::where('id',$id)->first();
@@ -286,7 +281,8 @@ class POController extends Controller
                         ->addColumn('dokumen_kontrak', function($data){
                             $url = asset('assets/po/'.$data->dokumen_kontrak);
                             $link = '';
-                            $link .= '<a href="'.$url.'">'.$data->dokumen_kontrak.'</a>';
+                            // $link .= '<a href="'.$url.'">'.$data->dokumen_kontrak.'</a>';
+                            $link .= '<a href="'.$url.'">View File</a>';
                             return $link;
                         })
                         ->addColumn('print',function($data){

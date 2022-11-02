@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'AdminLTE 3',
+    'title' => 'E-DanWinner',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -312,6 +312,7 @@ return [
             'can'  => 'manage-blog',
         ],
         [
+            'key'         => 'dashboard',
             'text'        => 'Dashboard',
             'url'         => '/',
             'icon'        => 'fas fa-fw fa-tachometer-alt',

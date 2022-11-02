@@ -228,7 +228,7 @@ class DSMController extends Controller
                         ->addColumn('file_prakualifikasi', function($data){
                             $url = asset('assets/dsm/'.$data->file_prakualifikasi);
                             $link = '';
-                            $link .= '<a href="'.$url.'">'.$data->file_prakualifikasi.'</a>';
+                            $link .= '<a href="'.$url.'">View File</a>';
                             return $link;
                         })
                         ->addColumn('action', function($data){

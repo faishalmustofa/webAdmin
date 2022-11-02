@@ -38,6 +38,15 @@ class EventServiceProvider extends ServiceProvider
             $user_roles = UserRole::where('user_id',$user->id)->with('role','user')->first();
             $admin_role = $user_roles->role;
             
+            if( $admin_role->slug === 'pengadaan' || $admin_role->slug === 'produksi' ){
+                $route = route('profile',$user->id);
+                $event->menu->addAfter('dashboard',[
+                    'text'        => 'Profile',
+                    'url'         => $route,
+                    'icon'        => 'fas fa-fw fa-user',
+                ]);
+            }
+
             if( $admin_role->slug === 'super-admin' ){
                 $event->menu->addAfter('grafik',[
                     'text'        => 'User List',
