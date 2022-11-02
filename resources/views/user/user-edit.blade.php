@@ -14,7 +14,7 @@
                         </div>
                     </div>
                     <!-- /.card-header -->
-                    <form action="{{ $urlSubmit }}" id="editSPPM" method="POST" enctype="multipart/form-data">
+                    <form action="{{ $urlSubmit }}" id="updateUser" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="card-body">
                             @include('flash::message')
@@ -63,9 +63,9 @@
                                     <label for="role">Role</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <select class="custom-select text-center" name="proses" id="proses" style="width: 50%;border:solid 2px">
+                                    <select class="custom-select text-center" name="role" id="role" style="width: 50%;border:solid 2px">
                                         @foreach ($role as $item)
-                                            <option value="0" {{ ( old('proses') ? old('proses') : ($item->slug === $user_roles->slug ? 'selected' : '') ) }} >{{ $item->slug }}</option>
+                                            <option value="{{ $item->id }}" {{ ( old('role') ? old('role') : ($item->slug === $user_roles->slug ? 'selected' : '') ) }} >{{ $item->slug }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -79,7 +79,7 @@
 
                             <div class="d-flex justify-content-end">
                                 <a class="btn btn-default mr-2" href="{{ route('users') }}">Cancel</a>
-                                <button type="button" class="btn btn-primary" id="btnSubmit">Submit</button>
+                                <button type="submit" class="btn btn-primary" id="btnSubmit">Submit</button>
                             </div>
                         </div>
                     </form>

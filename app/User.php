@@ -47,6 +47,19 @@ class User extends Authenticatable
             'email' => 'required|email',
             'password' => 'required|string|min:8|confirmed',
             'role' => 'required'
+        ],
+        'update-profile' => [
+            'name' => 'required|string',
+            'email' => 'required|email',
+            'password' => 'required|string|min:8|confirmed',
+        ]
+    ];
+
+    public $messages = [
+        'update-profile' => [
+            'name' => 'Name fields is required',
+            'email' => 'Email fields is required',
+            'password' => 'Password fields is required',
         ]
     ];
 }

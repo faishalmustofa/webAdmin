@@ -27,10 +27,15 @@ class SPPMController extends Controller
         return view('sppm.list-sppm');
     }
 
-    public function createSppm(){
+    public function createSppm()
+    {
         $user = Auth::user();
         $user_roles = UserRole::where('user_id',$user->id)->with('role','user')->first();
         $data['admin_role'] = $user_roles->role;
+        if ($data['admin_role']->slug === 'pengadaan'){
+            toastr()->error('Anda tidak memiliki akses untuk ke halaman Tambah SPPM.');
+            return redirect()->route('sppm');
+        }
         $data['form'] = [
             'route' => ['store.sppm'],
             'method' => 'POST',
@@ -42,7 +47,8 @@ class SPPMController extends Controller
         return view('sppm.create-sppm',$data);
     }
 
-    public function storeSppm(Request $request){
+    public function storeSppm(Request $request)
+    {
         $rules = $this->model->rules['sppm'];
         $messages = $this->model->messages['sppm'];
 
@@ -127,7 +133,8 @@ class SPPMController extends Controller
         }
     }
 
-    public function editSppm($id){
+    public function editSppm($id)
+    {
         $user = Auth::user();
         $user_roles = UserRole::where('user_id',$user->id)->with('role','user')->first();
         $data['admin_role'] = $user_roles->role;
@@ -139,7 +146,12 @@ class SPPMController extends Controller
         return view('sppm.edit-sppm',$data);
     }
 
-    public function updateSppm(Request $request,$id){
+    public function updateSppm(Request $request,$id)
+    {
+        $user = Auth::user();
+        $user_roles = UserRole::where('user_id',$user->id)->with('role','user')->first();
+        $admin_role = $user_roles->role;
+
         $rules = $this->model->rules['sppm'];
         $messages = $this->model->messages['sppm'];
 
@@ -154,6 +166,24 @@ class SPPMController extends Controller
             }
         }
 
+        if ($admin_role->slug === 'produksi'){
+            $rules['id_pembuat'] = "nullable";
+            $rules['nama_pembuat'] = "nullable";
+            $rules['nama_project'] = "nullable";
+            $rules['no_sppm'] = "nullable";
+            $rules['no_spk'] = "nullable";
+            $rules['uraian'] = "nullable";
+            $rules['kode_material'] = "nullable";
+            $rules['spesifikasi'] = "nullable";
+            $rules['satuan'] = "nullable";
+            $rules['qty_sppm'] = "nullable";
+            $rules['hpp'] = "nullable";
+            $rules['qty_hpp'] = "nullable";
+            $rules['target_kedatangan'] = "nullable";
+            $rules['status'] = "nullable";
+            $rules['keterangan'] = "nullable";
+        }
+
         $validator = Validator::make($data, $rules, $messages);
         if($validator->fails()){
             if ($request->ajax()) {
@@ -164,13 +194,7 @@ class SPPMController extends Controller
             }
             return back()->withInput()->withErrors($validator);
         }
-        // if ($request->ajax()) {
-        //     return response()->json([
-        //         "status" => true,
-        //         "message" => "Data updated successfuly !",
-        //         "data" => $request->all()
-        //     ]);
-        // }
+        
         try {
             \DB::beginTransaction();
             $sppm = SPPM::where('id',$id)->first();
@@ -220,7 +244,8 @@ class SPPMController extends Controller
         }
     }
 
-    public function deleteSppm($id){
+    public function deleteSppm($id)
+    {
         try {
             $sppm = SPPM::findorfail($id);
             
@@ -237,7 +262,8 @@ class SPPMController extends Controller
         }
     }
 
-    public function detailProsesSPPM($id){
+    public function detailProsesSPPM($id)
+    {
         $user = Auth::user();
         $user_roles = UserRole::where('user_id',$user->id)->with('role','user')->first();
         $data['admin_role'] = $user_roles->role;
@@ -255,7 +281,8 @@ class SPPMController extends Controller
         return view('sppm.detail-proses-sppm',$data);
     }
 
-    public function updateProsesSPPM(Request $request,$id){
+    public function updateProsesSPPM(Request $request,$id)
+    {
 
         $proses_sppm = ProsesSPPM::where('id',$id)->with('sppm')->first();
         if ($request->input('proses') - $proses_sppm->status > 1){
@@ -346,7 +373,7 @@ class SPPMController extends Controller
                         ->addColumn('file_teknis', function($data){
                             $url = asset('assets/sppm/'.$data->file_teknis);
                             $link = '';
-                            $link .= '<a href="'.$url.'">'.$data->file_teknis.'</a>';
+                            $link .= '<a href="'.$url.'">View File</a>';
                             return $link;
                         })
                         ->addColumn('status',function($data){

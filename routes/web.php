@@ -34,6 +34,9 @@ Route::post('/post-login', 'AuthController@postLogin')->name('post-login');
 Route::post('/logout', 'AuthController@logout')->name('logout');
 
 //User
+Route::get('/profile/{id}', 'UserController@profile')->name('profile');
+Route::post('/update-profile/{id}', 'UserController@updateProfile')->name('update.profile');
+
 Route::get('/user-list', 'UserController@userList')->name('users');
 Route::get('/edit-user/{id}', 'UserController@editUser')->name('edit.user');
 Route::post('/update-user/{id}', 'UserController@updateUser')->name('update.user');
