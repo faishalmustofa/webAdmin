@@ -54,6 +54,13 @@
                 order : ['0','asc'],
                 dom: 'Blfrtip',
                 responsive: false,
+                buttons: ['copy', 'excel', 'csv',
+                    {
+                        extend: 'pdfHtml5',
+                        orientation: 'landscape',
+                        pageSize: 'LEGAL'
+                    }, 'print'
+                ]
             });
         });
         
