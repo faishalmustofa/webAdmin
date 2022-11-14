@@ -57,6 +57,39 @@
                 $(this).next('.custom-file-label').html(fileName[0].name);
             });
 
+            $('#qty_sppm').on('change',function(e){
+                e.preventDefault();
+                let qty_sppm = parseInt($(this).val());
+                let hpp = $('#hpp').val();
+                hpp = parseInt(hpp.split('.').join(''));
+                let qty_hpp = 0;
+                if (hpp != 0) {
+                    let qty_hpp = qty_sppm * hpp;
+                    qty_hpp = String(qty_hpp);
+                    qty_hpp = formatRupiah(qty_hpp, '');
+                    $('#qty_hpp').val(qty_hpp);
+                }
+            });
+
+            $('#hpp').on('change',function(e){
+                e.preventDefault();
+                let hpp = $(this).val();
+                hpp = parseInt(hpp.split('.').join(''));
+                let qty_sppm = parseInt($('#qty_sppm').val());
+                // hpp = parseInt(hpp.split('.').join(''));
+                // console.log('qty_sppm : ',qty_sppm);
+                // console.log('hpp : ',hpp);
+                let qty_hpp = 0;
+                if (hpp != 0) {
+                    let qty_hpp = qty_sppm * hpp;
+                    qty_hpp = String(qty_hpp);
+                    qty_hpp = formatRupiah(qty_hpp, '');
+                    console.log(qty_hpp);
+                    $('#qty_hpp').val(qty_hpp);
+                }
+                
+            });
+
             $('#btnSubmit').click(function(e){
                 e.preventDefault();
                 let $this = $(this);
@@ -68,6 +101,7 @@
 
                 let file_teknis = $('#file_teknis')[0].files;
                 request.append('file_teknis', (file_teknis.length > 0 ? file_teknis[0] : ''));
+                // console.log(form);
                 
                 form.forEach(value => {
                     if (value.name === 'hpp' || value.name === 'qty_hpp') {
@@ -78,6 +112,8 @@
                         request.append(value.name, value.value);
                     }
                 });
+
+                // console.log(request.getAll('qty_hpp'));
 
                 $.ajax({
                     type: "POST",

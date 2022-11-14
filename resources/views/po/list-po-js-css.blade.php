@@ -36,7 +36,13 @@
                 dom: 'Blfrtip',
                 responsive: false,
                 autoWidth: false,
-                buttons: ['csv', 'excel', 'pdf', 'print'],
+                buttons: ['copy', 'excel', 'csv',
+                    {
+                        extend: 'pdfHtml5',
+                        orientation: 'landscape',
+                        pageSize: 'LEGAL'
+                    }, 'print'
+                ]
             });
         });
         

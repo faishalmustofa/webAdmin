@@ -299,6 +299,7 @@
                                         class="form-control" 
                                         placeholder="Enter Qty HPP..."
                                         id="qty_hpp"
+                                        readonly
                                     >
                                 </div>
                                 @if ($errors->has('qty_hpp'))
@@ -370,8 +371,9 @@
                                     @else
                                         <select class="custom-select" name="status" id="status" style="width:35%" disabled>
                                             <option class="text-center" value=""> -- Select Status -- </option>
-                                            <option class="text-center" value="0" selected>Diproses</option>
+                                            <option class="text-center" value="0" selected >Diproses</option>
                                         </select>
+                                        <input type="hidden" name="status" id="status" value="0">
                                     @endif
                                 </div>
                                 @if ($errors->has('status'))

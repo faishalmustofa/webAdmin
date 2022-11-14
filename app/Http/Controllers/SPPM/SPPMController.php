@@ -32,7 +32,7 @@ class SPPMController extends Controller
         $user = Auth::user();
         $user_roles = UserRole::where('user_id',$user->id)->with('role','user')->first();
         $data['admin_role'] = $user_roles->role;
-        if ($data['admin_role']->slug === 'pengadaan'){
+        if ($data['admin_role']->slug === 'pengadaan' || $data['admin_role']->slug === 'super-admin'){
             toastr()->error('Anda tidak memiliki akses untuk ke halaman Tambah SPPM.');
             return redirect()->route('sppm');
         }
@@ -387,8 +387,16 @@ class SPPMController extends Controller
                             return $status;
                         })
                         ->addColumn('print',function($data){
-                            $route = route('get.print.sppm',$data->id);
-                            $print = '<a href="'.$route.'"><i class="fas fa-print"></i></a>';
+                            $user = Auth::user();
+                            $user_roles = UserRole::where('user_id',$user->id)->with('role','user')->first();
+                            $admin_role = $user_roles->role;
+                            $print = '';
+
+                            if ($admin_role->slug != 'super-admin') {
+                                $route = route('get.print.sppm',$data->id);
+                                $print = '<a href="'.$route.'"><i class="fas fa-print"></i></a>';
+                            }
+
                             return $print;
                         })
                         ->addColumn('action', function($data){
@@ -401,10 +409,10 @@ class SPPMController extends Controller
                             $delete_url = route('delete.sppm',$data->id);
                             $button = '';
                             $button .= '<div class="btn-group" role="group">';
-                            $button .= '<a class="btn" href="'.$edit_url.'"><i class="fa fa-edit text-warning"></i></a>';
-                            if ( ($admin_role->slug === 'pengadaan') || ($admin_role->slug === 'super-admin') ){
-                                // $button .= '<a class="btn" href="'.$show_url.'"><i class="fa fa-search text-info"></i></a>';
-                                // $button .= '<a class="btn" href="'.$edit_url.'"><i class="fa fa-edit text-warning"></i></a>';
+                            if ( ($admin_role->slug === 'pengadaan') ){
+                                $button .= '<a class="btn" onclick="return confirm(\'Are you sure?\')"  href="'.$delete_url.'"><i class="fa fa-trash text-danger"></i></a>';
+                            } elseif (($admin_role->slug === 'produksi')) {
+                                $button .= '<a class="btn" href="'.$edit_url.'"><i class="fa fa-edit text-warning"></i></a>';
                                 $button .= '<a class="btn" onclick="return confirm(\'Are you sure?\')"  href="'.$delete_url.'"><i class="fa fa-trash text-danger"></i></a>';
                             }
                             $button .= '</div>';
