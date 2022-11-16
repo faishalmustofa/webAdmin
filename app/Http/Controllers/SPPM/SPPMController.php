@@ -410,9 +410,9 @@ class SPPMController extends Controller
                             $button = '';
                             $button .= '<div class="btn-group" role="group">';
                             if ( ($admin_role->slug === 'pengadaan') ){
+                                $button .= '<a class="btn" href="'.$edit_url.'"><i class="fa fa-edit text-warning"></i></a>';
                                 $button .= '<a class="btn" onclick="return confirm(\'Are you sure?\')"  href="'.$delete_url.'"><i class="fa fa-trash text-danger"></i></a>';
                             } elseif (($admin_role->slug === 'produksi')) {
-                                $button .= '<a class="btn" href="'.$edit_url.'"><i class="fa fa-edit text-warning"></i></a>';
                                 $button .= '<a class="btn" onclick="return confirm(\'Are you sure?\')"  href="'.$delete_url.'"><i class="fa fa-trash text-danger"></i></a>';
                             }
                             $button .= '</div>';
