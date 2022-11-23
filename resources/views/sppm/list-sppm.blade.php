@@ -7,9 +7,13 @@
 
 @section('content')
     <div class="container mt-5">
+        <div class="jumbotron mt-0 mb-0 p-1">
+            <h1 class="display-5 mb-0">SPPM</h1>
+            <hr class="my-2 ">
+        </div>
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">SPPM</h3>
+                <h3 class="card-title">List SPPM</h3>
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus" style="display: none;"></i></button>
                     </div>

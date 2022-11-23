@@ -12,7 +12,10 @@
         @include('flash::message')
         <div class="card">
             <div class="card-header">
-                <h3>Grafik Pengeluaran</h3>
+                <div class="jumbotron mt-0 mb-0 p-2">
+                    <h1 class="display-5 mb-0">Grafik Pengeluaran</h1>
+                    <hr class="my-2 ">
+                </div>
                 <div class="card-tools justify-align-start">
                     Filter by :
                     <form action="{{ route('filter.grafik') }}" id="filterGrafik" method="POST" enctype="multipart/form-data">
