@@ -53,7 +53,7 @@ class PO extends Model
             'lokasi_penyerahan_barang' => 'required',
             'penawaran' => 'required',
             'tgl_penawaran' => 'required',
-            'dokumen_kontrak' => 'required|mimes:pdf',
+            // 'dokumen_kontrak' => 'required|mimes:pdf',
         ]
     ];
 
@@ -71,7 +71,7 @@ class PO extends Model
             'lokasi_penyerahan_barang' => 'Lokasi Penyerahan Barang field is Required',
             'penawaran' => 'Penawaran field is Required',
             'tgl_penawaran' => 'Tanggal penawaran field is Required',
-            'dokumen_kontrak' => 'Dokumen & Kontrak field is Required',
+            // 'dokumen_kontrak' => 'Dokumen & Kontrak field is Required',
         ]
     ];
 }

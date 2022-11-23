@@ -17,6 +17,7 @@ class AuthController extends Controller
     {
         $this->model = $model;
         $this->role = $role;
+
     }
 
     public function registration(){
@@ -69,33 +70,33 @@ class AuthController extends Controller
     public function postLogin(Request $request)
     {
         $backToLogin = redirect()->route('login');
-
         $validator = Validator::make($request->all(), $this->model->rules['login']);
         if($validator->fails()){
             return $backToLogin->withInput()->withErrors($validator);
         }
         $credentials = $request->only('email', 'password');
-
-        $user = User::where('email',$request->email)->firstOrFail();
+        
+        $user = User::where('email',$request->email)->first();
         if ($user){
             $remember = ($request->has('remember') && $request->remember == "on" ? true : false);
 
             if(!Auth::attempt($credentials,$remember)){
-                toastr()->error('Invalid Email Or Password!');
-                flash()->error('Invalid Email Or Password!');
+                toastr()->error('Email atau Password salah !');
+                flash()->error('Email atau Password salah !');
                 return $backToLogin;
             }
             if($user->status === 0){
                 flash()->error('Invalid Email Or Password!');
-                toastr()->error('Email Anda belum diverifikasi oleh admin');
+                toastr()->error('Email Anda belum diverifikasi oleh admin !');
                 return $backToLogin;
             }
             $redirectAfterLogin = redirect()->route('dashboard');
 
-            toastr()->success('Login success!');
-            flash()->success('Login success!');
+            toastr()->success('Login berhasil!');
+            flash()->success('Login berhasil!');
             return $redirectAfterLogin;
         } else {
+            toastr()->error('Email Anda belum terdaftar !');
             return $backToLogin;
         }
         

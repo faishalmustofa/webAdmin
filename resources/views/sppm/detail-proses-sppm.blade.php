@@ -50,13 +50,21 @@
                     @if ($proses_sppm->status >= 6 && $proses_sppm->status === 6)
                         <h5 class="text-center" style="font-weight: bold">Proses selesai, material sudah diterima</h5>
                         <div class="row mt-3">
-                            <div class="col-md-5 text-right">{{ $tgl_proses_6 }} WIB</div>
+                            @if (is_null($tgl_proses_6))
+                                <div class="col-md-5 text-right">-</div>
+                            @else
+                                <div class="col-md-5 text-right">{{ $tgl_proses_6 }} WIB</div>
+                            @endif
                             <div class="col-md-1 text-center"><i class="fas fa-circle" style="color:lime"></i></div>
                             <div class="col-md-6 text-left">Selesai</div>
                         </div>
                     @elseif ($proses_sppm->status >= 6 && $proses_sppm->status != 6)
                         <div class="row mt-3">
-                            <div class="col-md-5 text-right">{{ $tgl_proses_6 }} WIB</div>
+                            @if (is_null($tgl_proses_6))
+                                <div class="col-md-5 text-right">-</div>
+                            @else
+                                <div class="col-md-5 text-right">{{ $tgl_proses_6 }} WIB</div>
+                            @endif
                             <div class="col-md-1 text-center"><i class="fas fa-circle" style="color:slategray"></i></div>
                             <div class="col-md-6 text-left">Selesai</div>
                         </div>
@@ -65,13 +73,21 @@
                     @if ($proses_sppm->status >= 5 && $proses_sppm->status === 5)
                         <h5 class="text-center" style="font-weight: bold">Sedang proses pembelian, material sudah dipesan</h5>
                         <div class="row mt-3">
-                            <div class="col-md-5 text-right">{{ $tgl_proses_5 }} WIB</div>
+                            @if (is_null($tgl_proses_5))
+                                <div class="col-md-5 text-right">-</div>
+                            @else
+                                <div class="col-md-5 text-right">{{ $tgl_proses_5 }} WIB</div>
+                            @endif
                             <div class="col-md-1 text-center"><i class="fas fa-circle" style="color:lime"></i></div>
                             <div class="col-md-6 text-left">Pembelian</div>
                         </div>
                     @elseif ($proses_sppm->status >= 5 && $proses_sppm->status != 5)
                         <div class="row mt-3">
-                            <div class="col-md-5 text-right">{{ $tgl_proses_5 }} WIB</div>
+                            @if (is_null($tgl_proses_5))
+                                <div class="col-md-5 text-right">-</div>
+                            @else
+                                <div class="col-md-5 text-right">{{ $tgl_proses_5 }} WIB</div>
+                            @endif
                             <div class="col-md-1 text-center"><i class="fas fa-circle" style="color:slategray"></i></div>
                             <div class="col-md-6 text-left">Pembelian</div>
                         </div>
@@ -80,13 +96,21 @@
                     @if ($proses_sppm->status >= 4 && $proses_sppm->status === 4)
                         <h5 class="text-center" style="font-weight: bold">Sedang proses pembuatan PO</h5>
                         <div class="row mt-3">
-                            <div class="col-md-5 text-right">{{ $tgl_proses_4 }} WIB</div>
+                            @if (is_null($tgl_proses_4))
+                                <div class="col-md-5 text-right">-</div>
+                            @else
+                                <div class="col-md-5 text-right">{{ $tgl_proses_4 }} WIB</div>
+                            @endif
                             <div class="col-md-1 text-center"><i class="fas fa-circle" style="color:lime"></i></div>
                             <div class="col-md-6 text-left">Pembuatan PO</div>
                         </div>
                     @elseif ($proses_sppm->status >= 4 && $proses_sppm->status != 4)
                         <div class="row mt-3">
-                            <div class="col-md-5 text-right">{{ $tgl_proses_4 }} WIB</div>
+                            @if (is_null($tgl_proses_4))
+                                <div class="col-md-5 text-right">-</div>
+                            @else
+                                <div class="col-md-5 text-right">{{ $tgl_proses_4 }} WIB</div>
+                            @endif
                             <div class="col-md-1 text-center"><i class="fas fa-circle" style="color:slategray"></i></div>
                             <div class="col-md-6 text-left">Pembuatan PO</div>
                         </div>
@@ -95,13 +119,21 @@
                     @if ($proses_sppm->status >= 3 && $proses_sppm->status === 3)
                         <h5 class="text-center" style="font-weight: bold">Sedang proses penawaran supplier</h5>
                         <div class="row mt-3">
-                            <div class="col-md-5 text-right">{{ $tgl_proses_3 }} WIB</div>
+                            @if (is_null($tgl_proses_3))
+                                -
+                            @else
+                                <div class="col-md-5 text-right">{{ $tgl_proses_3 }} WIB</div>
+                            @endif
                             <div class="col-md-1 text-center"><i class="fas fa-circle" style="color:lime"></i></div>
                             <div class="col-md-6 text-left">Penawaran supplier</div>
                         </div>
                     @elseif ($proses_sppm->status >= 3 && $proses_sppm->status != 3)
                         <div class="row mt-3">
-                            <div class="col-md-5 text-right">{{ $tgl_proses_3 }} WIB</div>
+                            @if (is_null($tgl_proses_3))
+                                <div class="col-md-5 text-right">-</div>
+                            @else
+                                <div class="col-md-5 text-right">{{ $tgl_proses_3 }} WIB</div>
+                            @endif
                             <div class="col-md-1 text-center"><i class="fas fa-circle" style="color:slategray"></i></div>
                             <div class="col-md-6 text-left">Penawaran supplier</div>
                         </div>
@@ -110,13 +142,21 @@
                     @if ($proses_sppm->status >= 2 && $proses_sppm->status === 2)
                         <h5 class="text-center" style="font-weight: bold">Sedang proses pengusulan RAB dan Material</h5>
                         <div class="row mt-3">
-                            <div class="col-md-5 text-right">{{ $tgl_proses_2 }} WIB</div>
+                            @if (is_null($tgl_proses_2))
+                                <div class="col-md-5 text-right">-</div>
+                            @else
+                                <div class="col-md-5 text-right">{{ $tgl_proses_2 }} WIB</div>
+                            @endif
                             <div class="col-md-1 text-center"><i class="fas fa-circle" style="color:lime"></i></div>
                             <div class="col-md-6 text-left">Pengusulan RAB dan Material</div>
                         </div>
                     @elseif ($proses_sppm->status >= 2 && $proses_sppm->status != 2)
                         <div class="row mt-3">
-                            <div class="col-md-5 text-right">{{ $tgl_proses_2 }} WIB</div>
+                            @if (is_null($tgl_proses_2))
+                                <div class="col-md-5 text-right">-</div>
+                            @else
+                                <div class="col-md-5 text-right">{{ $tgl_proses_2 }} WIB</div>
+                            @endif
                             <div class="col-md-1 text-center"><i class="fas fa-circle" style="color:slategray"></i></div>
                             <div class="col-md-6 text-left">Pengusulan RAB dan Material</div>
                         </div>
@@ -125,13 +165,21 @@
                     @if ($proses_sppm->status >= 1 && $proses_sppm->status === 1)
                         <h5 class="text-center" style="font-weight: bold">Sedang proses prakualifikasi supplier</h5>
                         <div class="row mt-3">
-                            <div class="col-md-5 text-right">{{ $tgl_proses_1 }} WIB</div>
+                            @if (is_null($tgl_proses_1))
+                                <div class="col-md-5 text-right">-</div>
+                            @else
+                                <div class="col-md-5 text-right">{{ $tgl_proses_1 }} WIB</div>
+                            @endif
                             <div class="col-md-1 text-center"><i class="fas fa-circle" style="color:lime"></i></div>
                             <div class="col-md-6 text-left">Prakualifikasi Supplier</div>
                         </div>
                     @elseif ($proses_sppm->status >= 1 && $proses_sppm->status != 1)
                         <div class="row mt-3">
-                            <div class="col-md-5 text-right">{{ $tgl_proses_1 }} WIB</div>
+                            @if (is_null($tgl_proses_1))
+                                <div class="col-md-5 text-right">-</div>
+                            @else
+                                <div class="col-md-5 text-right">{{ $tgl_proses_1 }} WIB</div>
+                            @endif
                             <div class="col-md-1 text-center"><i class="fas fa-circle" style="color:slategray"></i></div>
                             <div class="col-md-6 text-left">Prakualifikasi Supplier</div>
                         </div>

@@ -23,8 +23,24 @@ class SPPMController extends Controller
         $this->model = $model;
     }
 
+    public function getSppmBelumDiproses(){
+        return view('sppm.list-belum_diproses');
+    }
+
+    public function getSppmDiproses(){
+        return view('sppm.list-diproses');
+    }
+
+    public function getSppmSelesai(){
+        return view('sppm.list-selesai');
+    }
+
     public function getSppm(){
-        return view('sppm.list-sppm');
+        $dives = (new SPPM);
+        $data['belum_diproses'] = $dives->where('status','=', 0)->count();
+        $data['diproses'] = $dives->where('status','<>', 6)->where('status','<>', 0)->count();
+        $data['selesai'] = $dives->where('status','=', 6)->count();
+        return view('sppm.list-sppm',$data);
     }
 
     public function createSppm()
@@ -285,16 +301,16 @@ class SPPMController extends Controller
     {
 
         $proses_sppm = ProsesSPPM::where('id',$id)->with('sppm')->first();
-        if ($request->input('proses') - $proses_sppm->status > 1){
-            $messages = 'Pilih proses sesuai urutan';
-            if ($request->ajax()) {
-                return response()->json([
-                    'messages' => $messages,
-                    'status' => false
-                ], 200);
-            }
-            return back()->withInput()->withErrors($messages);
-        }
+        // if ($request->input('proses') - $proses_sppm->status > 1){
+        //     $messages = 'Pilih proses sesuai urutan';
+        //     if ($request->ajax()) {
+        //         return response()->json([
+        //             'messages' => $messages,
+        //             'status' => false
+        //         ], 200);
+        //     }
+        //     return back()->withInput()->withErrors($messages);
+        // }
 
         try {
             \DB::beginTransaction();
@@ -303,16 +319,17 @@ class SPPMController extends Controller
             $proses = (int) $request->input('proses');
             $tgl_proses = 'tgl_proses_'. $proses;
 
-            if ($proses != 0) {
-                $proses_sppm->update([
-                    'status' => $proses,
-                    'deskripsi' => $request->input('deskripsi'),
-                    $tgl_proses => Carbon::now()
-                ]);
-                $sppm->update([
-                    'status' => $proses
-                ]);
-            }
+            // if ($proses != 0) {
+                
+            // }
+            $proses_sppm->update([
+                'status' => $proses,
+                'deskripsi' => $request->input('deskripsi'),
+                $tgl_proses => Carbon::now()
+            ]);
+            $sppm->update([
+                'status' => $proses
+            ]);
             
             $route = route('detail.proses.sppm',$sppm->id);
 
@@ -346,9 +363,164 @@ class SPPMController extends Controller
         }
     }
 
+    public function datatablesBelumDiproses(Request $request)
+    {
+        $dives = (new SPPM)->where('status','=', 0);
+
+        return DataTables::of($dives->get())
+                        ->addColumn('no_project',function($data){
+                            $no_project = $data->id;
+                            return $no_project;
+                        })                
+                        ->addColumn('tgl_sppm',function($data){
+                            $tgl_sppm = Carbon::parse($data->created_at)->format('d-m-Y');
+                            return $tgl_sppm;
+                        })
+                        ->addColumn('no_spk',function($data){
+                            $no_spk = $data->no_spk;
+                            if ($no_spk === '0'){
+                                $no_spk = '-';
+                            }
+                            return $no_spk;
+                        })
+                        ->addColumn('target_kedatangan',function($data){
+                            $target_kedatangan = Carbon::parse($data->target_kedatangan)->format('d-m-Y');
+                            return $target_kedatangan;
+                        })
+                        ->addColumn('file_teknis', function($data){
+                            $url = asset('assets/sppm/'.$data->file_teknis);
+                            $link = '';
+                            $link .= '<a href="'.$url.'">View File</a>';
+                            return $link;
+                        })
+                        ->addColumn('status',function($data){
+                            $detail_proses = route('detail.proses.sppm',$data->id);
+                            $status = '';
+                            if($data->status === 6){
+                                $status .= '<a href="'.$detail_proses.'">Selesai</a>';
+                            } else {
+                                $status .= '<a href="'.$detail_proses.'">Diproses</a>';
+                            }
+                            return $status;
+                        })
+                        ->addColumn('print',function($data){
+                            $user = Auth::user();
+                            $user_roles = UserRole::where('user_id',$user->id)->with('role','user')->first();
+                            $admin_role = $user_roles->role;
+                            $print = '';
+
+                            if ($admin_role->slug != 'super-admin') {
+                                $route = route('get.print.sppm',$data->id);
+                                $print = '<a href="'.$route.'"><i class="fas fa-print"></i></a>';
+                            }
+
+                            return $print;
+                        })
+                        ->addColumn('action', function($data){
+                            $user = Auth::user();
+                            $user_roles = UserRole::where('user_id',$user->id)->with('role','user')->first();
+                            $admin_role = $user_roles->role;
+
+                            // $show_url = route('dives.show',$data->divecenter_id);
+                            $edit_url = route('edit.sppm',$data->id);
+                            $delete_url = route('delete.sppm',$data->id);
+                            $button = '';
+                            $button .= '<div class="btn-group" role="group">';
+                            if ( ($admin_role->slug === 'pengadaan') ){
+                                $button .= '<a class="btn" href="'.$edit_url.'"><i class="fa fa-edit text-warning"></i></a>';
+                                $button .= '<a class="btn" onclick="return confirm(\'Are you sure?\')"  href="'.$delete_url.'"><i class="fa fa-trash text-danger"></i></a>';
+                            } elseif (($admin_role->slug === 'produksi')) {
+                                $button .= '<a class="btn" onclick="return confirm(\'Are you sure?\')"  href="'.$delete_url.'"><i class="fa fa-trash text-danger"></i></a>';
+                            }
+                            $button .= '</div>';
+                            return $button;
+                        })
+                        ->rawColumns(['no_project','tgl_sppm','no_spk','target_kedatangan','file_teknis','status','print','action'])
+                        ->addIndexColumn()
+                        ->make(true);
+    }
+
+
+    public function datatablesDiproses(Request $request)
+    {
+        $dives = (new SPPM)->where('status','<>', 6)->where('status','<>', 0);
+
+        return DataTables::of($dives->get())
+                        ->addColumn('no_project',function($data){
+                            $no_project = $data->id;
+                            return $no_project;
+                        })                
+                        ->addColumn('tgl_sppm',function($data){
+                            $tgl_sppm = Carbon::parse($data->created_at)->format('d-m-Y');
+                            return $tgl_sppm;
+                        })
+                        ->addColumn('no_spk',function($data){
+                            $no_spk = $data->no_spk;
+                            if ($no_spk === '0'){
+                                $no_spk = '-';
+                            }
+                            return $no_spk;
+                        })
+                        ->addColumn('target_kedatangan',function($data){
+                            $target_kedatangan = Carbon::parse($data->target_kedatangan)->format('d-m-Y');
+                            return $target_kedatangan;
+                        })
+                        ->addColumn('file_teknis', function($data){
+                            $url = asset('assets/sppm/'.$data->file_teknis);
+                            $link = '';
+                            $link .= '<a href="'.$url.'">View File</a>';
+                            return $link;
+                        })
+                        ->addColumn('status',function($data){
+                            $detail_proses = route('detail.proses.sppm',$data->id);
+                            $status = '';
+                            if($data->status === 6){
+                                $status .= '<a href="'.$detail_proses.'">Selesai</a>';
+                            } else {
+                                $status .= '<a href="'.$detail_proses.'">Diproses</a>';
+                            }
+                            return $status;
+                        })
+                        ->addColumn('print',function($data){
+                            $user = Auth::user();
+                            $user_roles = UserRole::where('user_id',$user->id)->with('role','user')->first();
+                            $admin_role = $user_roles->role;
+                            $print = '';
+
+                            if ($admin_role->slug != 'super-admin') {
+                                $route = route('get.print.sppm',$data->id);
+                                $print = '<a href="'.$route.'"><i class="fas fa-print"></i></a>';
+                            }
+
+                            return $print;
+                        })
+                        ->addColumn('action', function($data){
+                            $user = Auth::user();
+                            $user_roles = UserRole::where('user_id',$user->id)->with('role','user')->first();
+                            $admin_role = $user_roles->role;
+
+                            // $show_url = route('dives.show',$data->divecenter_id);
+                            $edit_url = route('edit.sppm',$data->id);
+                            $delete_url = route('delete.sppm',$data->id);
+                            $button = '';
+                            $button .= '<div class="btn-group" role="group">';
+                            if ( ($admin_role->slug === 'pengadaan') ){
+                                $button .= '<a class="btn" href="'.$edit_url.'"><i class="fa fa-edit text-warning"></i></a>';
+                                $button .= '<a class="btn" onclick="return confirm(\'Are you sure?\')"  href="'.$delete_url.'"><i class="fa fa-trash text-danger"></i></a>';
+                            } elseif (($admin_role->slug === 'produksi')) {
+                                $button .= '<a class="btn" onclick="return confirm(\'Are you sure?\')"  href="'.$delete_url.'"><i class="fa fa-trash text-danger"></i></a>';
+                            }
+                            $button .= '</div>';
+                            return $button;
+                        })
+                        ->rawColumns(['no_project','tgl_sppm','no_spk','target_kedatangan','file_teknis','status','print','action'])
+                        ->addIndexColumn()
+                        ->make(true);
+    }
+
     public function datatables(Request $request)
     {
-        $dives = (new SPPM);
+        $dives = (new SPPM)->where('status','=', 6);
 
         return DataTables::of($dives->get())
                         ->addColumn('no_project',function($data){
