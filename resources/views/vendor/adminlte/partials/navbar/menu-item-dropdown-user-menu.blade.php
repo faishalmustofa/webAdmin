@@ -22,8 +22,15 @@
                  class="user-image img-circle elevation-2"
                  alt="{{ Auth::user()->name }}">
         @endif
+
+        <?php 
+            $user = Auth::user();
+            $user_roles = \App\UserRole::where('user_id',$user->id)->with('role','user')->first();
+            $role = $user_roles->role;
+        ?>
+
         <span @if(config('adminlte.usermenu_image')) class="d-none d-md-inline" @endif>
-            {{ Auth::user()->name }}
+           <strong>{{ $user->name }} | {{ $role->name }}</strong>
         </span>
     </a>
 
